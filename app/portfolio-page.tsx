@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 
 const NAV_TABS = ['HOME', 'PROJECTS', 'SKILLS', 'EXPERIENCE', 'CONTACT'];

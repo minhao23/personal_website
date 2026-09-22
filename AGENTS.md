@@ -1,35 +1,38 @@
 # figma-make-app
 
-React + Vite + Tailwind CSS project running inside Figma Make.
+Next.js + Tailwind CSS project.
 
 ## Development Server
 
-A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.
+Use Bun to run the Next.js development server.
 
-- Preview URL: The user can access the running app through the preview panel
-- Hot reload: Changes to source files are reflected immediately
+- `bun run dev` starts the local app
+- Default local URL: `http://localhost:3000`
+- Hot reload is handled by Next.js
 
 ## Project Structure
 
 This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
 
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
-- `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
+- `app/layout.tsx` - Root HTML shell and global CSS import
+- `app/page.tsx` - Home page route
+- `app/portfolio-page.tsx` - Main client component for the portfolio UI
+- `app/globals.css` - Global CSS entrypoint and Tailwind import
+- `package.json` - Project dependencies and Bun/Next scripts
+- `next.config.ts` - Next.js configuration
+- `postcss.config.mjs` - Tailwind PostCSS wiring
+- `tsconfig.json` - TypeScript configuration for Next.js
 
 ## Dependencies
 
-- Runtime: React 19 and React DOM 19
-- Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
-- Build tooling: Vite 8, TypeScript 5.7, and `@vitejs/plugin-react`
+- Runtime: Next.js 15, React 19, and React DOM 19
+- Styling: Tailwind CSS v4 via PostCSS
+- Build tooling: TypeScript 5.7
+- Package manager: Bun
 - Formatting: oxfmt
 
 ## Styling
 
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
+This project uses **Tailwind CSS v4** with PostCSS. `app/globals.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `app/globals.css`.
 
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+Keep CSS `@import` statements first, then add any font imports, `@font-face` rules, and global defaults there.
