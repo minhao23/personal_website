@@ -14,15 +14,14 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
           <div className="flex min-w-0 items-center gap-4">
             <div className="flex items-center gap-3">
               <span className="font-[var(--font-display)] text-[2.2rem] leading-none tracking-[0.03em] text-white uppercase">
-                FUT<span className="text-[var(--color-fut-yellow)]">17</span>
               </span>
               <span className="h-10 w-px bg-white/25" />
             </div>
             <div className="min-w-0">
               <p className="truncate font-[var(--font-display)] text-[1.55rem] leading-none tracking-[0.02em] text-white">
-                Minhao
+                He Minhao
               </p>
-              <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-white/70">FUT Founder</p>
+              <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-white/70">Welcome!</p>
             </div>
           </div>
 

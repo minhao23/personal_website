@@ -1,4 +1,9 @@
+'use client';
+
+import { useState } from 'react';
+
 import { ContentCard } from './content-card';
+import { DetailModal } from './detail-modal';
 import { FutHeader } from './fut-header';
 import { PORTFOLIO_CONTENT, type SectionSlug } from './portfolio-data';
 
@@ -8,6 +13,7 @@ type PortfolioScreenProps = {
 
 export function PortfolioScreen({ section }: PortfolioScreenProps) {
   const content = PORTFOLIO_CONTENT[section];
+  const [activeModal, setActiveModal] = useState<NonNullable<(typeof content.cards)[number]['modal']> | null>(null);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-transparent text-white">
@@ -43,12 +49,22 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
           </article>
 
           <div className="grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
-            {content.cards.map((card) => (
-              <ContentCard key={card.title} {...card} />
-            ))}
+            {content.cards.map((card) => {
+              const modal = card.modal;
+
+              return (
+                <ContentCard
+                  key={card.title}
+                  {...card}
+                  onClick={modal ? () => setActiveModal(modal) : undefined}
+                />
+              );
+            })}
           </div>
         </section>
       </main>
+
+      {activeModal ? <DetailModal modal={activeModal} onClose={() => setActiveModal(null)} /> : null}
     </div>
   );
 }

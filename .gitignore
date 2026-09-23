@@ -2,3 +2,4 @@
 .next
 node_modules
 references/**/*
+/app/assets/resume/He_Minhao_CV.pdf

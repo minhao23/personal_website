@@ -1,3 +1,9 @@
+import type { StaticImageData } from 'next/image';
+
+import bytedanceLogo from '../app/assets/companies/bytedance-logo.webp';
+import govtechLogo from '../app/assets/companies/govtech.webp';
+import nusLogo from '../app/assets/universities/kisspng-national-university-of-singapore-west-bengal-natio-national-university-of-singapore-ssl-solutions-5b6615cd1c8121.6941376315334169091168.jpg';
+
 export const NAV_ITEMS = [
   { slug: 'home', label: 'HOME', width: '1.05fr' },
   { slug: 'internships', label: 'INTERNSHIPS', width: '1.34fr' },
@@ -13,6 +19,20 @@ export type TabCard = {
   title: string;
   body: string;
   label?: string;
+  meta?: string;
+  image?: StaticImageData;
+  imageAlt?: string;
+  actionLabel?: string;
+  modal?: {
+    title: string;
+    description: string;
+    entries: {
+      title: string;
+      subtitle: string;
+      meta: string;
+      bullets: string[];
+    }[];
+  };
 };
 
 export type SectionContent = {
@@ -29,7 +49,7 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     title: 'A sharper FIFA-style portfolio screen.',
     description:
       'The layout now focuses on one clean hero, one simple navbar, and compact panels that stay inside a single screen.',
-    stats: ['FIFA Direction', 'No Page Scroll', 'Cleaner Navbar'],
+    stats: ['NUS Double Degree', '4.63 CS GPA', '7 Distinctions'],
     cards: [
       {
         label: 'Focus',
@@ -37,38 +57,70 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         body: 'The stadium background does the heavy lifting, so the interface can stay cleaner and less noisy.',
       },
       {
-        label: 'Layout',
-        title: 'One viewport only',
-        body: 'The page is structured to fit inside the screen rather than stacking sections vertically.',
+        label: 'Education',
+        title: 'Educational history',
+        meta: 'Click to view full details',
+        body: 'Computer Science and Business Administration at NUS, with Eunoia Junior College before that.',
+        image: nusLogo,
+        imageAlt: 'National University of Singapore logo',
+        actionLabel: 'Open education history',
+        modal: {
+          title: 'Educational history',
+          description: 'A quick look at the academic background captured in the resume.',
+          entries: [
+            {
+              title: 'National University of Singapore',
+              subtitle: 'BSc in Computer Science and BBA in Business Administration',
+              meta: 'Singapore · Aug 2023 - May 2027',
+              bullets: [
+                'Double Degree Programme in Computer Science and Business Administration.',
+                'GPA: 4.63 in Computer Science and 4.37 in Business Administration.',
+              ],
+            },
+            {
+              title: 'Eunoia Junior College',
+              subtitle: 'GCE A-Level',
+              meta: 'Singapore · Jan 2020 - Dec 2021',
+              bullets: ['Obtained 7 distinctions.'],
+            },
+          ],
+        },
       },
       {
         label: 'Result',
-        title: 'Less clutter',
-        body: 'The odd top-left and top-right UI blocks are removed so the navigation reads properly.',
+        title: 'Single-screen layout',
+        body: 'The page stays compact and readable, so each section feels more like a FUT panel than a long scrolling site.',
       },
     ],
   },
   internships: {
     eyebrow: 'Internships',
-    title: 'What this page should highlight.',
+    title: 'Engineering experience across infrastructure, product systems, and operations.',
     description:
-      'This section is meant for your internship story: what roles you want, what you bring, and where you want to grow.',
-    stats: ['Product Roles', 'Engineering Roles', 'Creative Tech'],
+      'Your resume shows a mix of software engineering, network operations, automation, testing, and developer tooling across ByteDance, GovTech, and Contfinity.',
+    stats: ['ByteDance', 'GovTech', 'Contfinity'],
     cards: [
       {
-        label: 'Track',
-        title: 'Product engineering',
-        body: 'Good fit for teams that want frontend execution, component thinking, and fast iteration.',
+        label: 'Aug 2026 - Present',
+        title: 'ByteDance',
+        meta: 'Network Operation Engineer Intern · Singapore',
+        body: 'Built a Python, Prometheus, and Grafana monitoring pipeline to improve observability, automated network configuration management with Bash to reduce manual deployment effort by 45%, and optimized network traffic performance to improve throughput by 30%.',
+        image: bytedanceLogo,
+        imageAlt: 'ByteDance logo',
       },
       {
-        label: 'Track',
-        title: 'Software engineering',
-        body: 'Useful for showing problem solving, debugging, systems thinking, and backend fundamentals.',
+        label: 'Jan 2026 - Present',
+        title: 'Government Technology Agency',
+        meta: 'Software Engineer Intern · Singapore',
+        body: 'Developed internal workflow systems for more than 2,000 staff using Next.js, FastAPI, AWS, and PostgreSQL, set up Docker-based environments and GitLab CI pipelines, built over 30 automated tests to reach 87% coverage, and integrated OpenAI-powered ReAct agents that cut average query handling time by 61%.',
+        image: govtechLogo,
+        imageAlt: 'Government Technology Agency logo',
       },
       {
-        label: 'Track',
-        title: 'Creative tech',
-        body: 'Best for internships where design taste and implementation quality both matter.',
+        label: 'May 2025 - Aug 2025',
+        title: 'Contfinity',
+        meta: 'Network Engineer Intern · Singapore',
+        body: 'Implemented HTTPS-enabled syslog forwarding pipelines with Linux and Bash for centralized logging, and produced technical documentation plus infrastructure diagrams for large-scale government clients.',
       },
     ],
   },
