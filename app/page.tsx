@@ -1,5 +1,5 @@
-import PortfolioPage from './portfolio-page';
+import { redirect } from 'next/navigation';
 
 export default function Page() {
-  return <PortfolioPage />;
+  redirect('/home');
 }
