@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { ContentCard } from './content-card';
 import { DetailModal } from './detail-modal';
+import { ExperienceTimeline } from './experience-timeline';
 import { FutHeader } from './fut-header';
 import { PORTFOLIO_CONTENT, type SectionSlug } from './portfolio-data';
 
@@ -48,19 +49,23 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
             </div>
           </article>
 
-          <div className="grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
-            {content.cards.map((card) => {
-              const modal = card.modal;
+          {content.experienceTimeline ? (
+            <ExperienceTimeline entries={content.experienceTimeline} />
+          ) : (
+            <div className="grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
+              {content.cards.map((card) => {
+                const modal = card.modal;
 
-              return (
-                <ContentCard
-                  key={card.title}
-                  {...card}
-                  onClick={modal ? () => setActiveModal(modal) : undefined}
-                />
-              );
-            })}
-          </div>
+                return (
+                  <ContentCard
+                    key={card.title}
+                    {...card}
+                    onClick={modal ? () => setActiveModal(modal) : undefined}
+                  />
+                );
+              })}
+            </div>
+          )}
         </section>
       </main>
 

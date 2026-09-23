@@ -10,10 +10,9 @@ export const NAV_ITEMS = [
   { slug: 'projects', label: 'PROJECTS', width: '1.12fr' },
   { slug: 'hobbies', label: 'HOBBIES', width: '1.08fr' },
   { slug: 'about', label: 'ABOUT', width: '0.95fr' },
-  { slug: 'contact', label: 'CONTACT', width: '1.06fr' },
 ] as const;
 
-export type SectionSlug = (typeof NAV_ITEMS)[number]['slug'];
+export type SectionSlug = 'home' | 'internships' | 'projects' | 'hobbies' | 'about' | 'contact';
 
 export type TabCard = {
   title: string;
@@ -35,12 +34,25 @@ export type TabCard = {
   };
 };
 
+export type ExperienceEntry = {
+  company: string;
+  role: string;
+  location: string;
+  dateRange: string;
+  duration?: string;
+  stack: string[];
+  bullets: string[];
+  image?: StaticImageData;
+  imageAlt?: string;
+};
+
 export type SectionContent = {
   eyebrow: string;
   title: string;
   description: string;
   stats: string[];
   cards: TabCard[];
+  experienceTimeline?: ExperienceEntry[];
 };
 
 export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
@@ -98,29 +110,50 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     title: 'Engineering experience across infrastructure, product systems, and operations.',
     description:
       'Your resume shows a mix of software engineering, network operations, automation, testing, and developer tooling across ByteDance, GovTech, and Contfinity.',
-    stats: ['ByteDance', 'GovTech', 'Contfinity'],
-    cards: [
+    stats: ['3 Internships', '87% Test Coverage', '61% Faster Queries'],
+    cards: [],
+    experienceTimeline: [
       {
-        label: 'Aug 2026 - Present',
-        title: 'ByteDance',
-        meta: 'Network Operation Engineer Intern · Singapore',
-        body: 'Built a Python, Prometheus, and Grafana monitoring pipeline to improve observability, automated network configuration management with Bash to reduce manual deployment effort by 45%, and optimized network traffic performance to improve throughput by 30%.',
+        company: 'ByteDance',
+        role: 'Network Operation Engineer Intern',
+        location: 'Singapore',
+        dateRange: 'Aug 2026 - Present',
+        duration: 'Current',
+        stack: ['Python', 'Prometheus', 'Grafana', 'Bash'],
+        bullets: [
+          'Built a network monitoring and alerting pipeline to improve observability and reduce downtime.',
+          'Automated network configuration management with Bash, cutting manual deployment effort by 45%.',
+          'Analyzed and optimized network traffic performance, improving throughput by 30%.',
+        ],
         image: bytedanceLogo,
         imageAlt: 'ByteDance logo',
       },
       {
-        label: 'Jan 2026 - Present',
-        title: 'Government Technology Agency',
-        meta: 'Software Engineer Intern · Singapore',
-        body: 'Developed internal workflow systems for more than 2,000 staff using Next.js, FastAPI, AWS, and PostgreSQL, set up Docker-based environments and GitLab CI pipelines, built over 30 automated tests to reach 87% coverage, and integrated OpenAI-powered ReAct agents that cut average query handling time by 61%.',
+        company: 'Government Technology Agency',
+        role: 'Software Engineer Intern',
+        location: 'Singapore',
+        dateRange: 'Jan 2026 - Present',
+        duration: '8 months',
+        stack: ['Next.js', 'FastAPI', 'AWS', 'PostgreSQL', 'Docker', 'Playwright'],
+        bullets: [
+          'Developed internal workflow systems used by more than 2,000 staff with Next.js, FastAPI, AWS, and PostgreSQL.',
+          'Implemented Docker-based development environments and GitLab CI pipelines to improve deployment and testing workflows.',
+          'Built more than 30 end-to-end, unit, and integration tests to reach 87% coverage and integrated OpenAI-powered ReAct agents that reduced average query handling time by 61%.',
+        ],
         image: govtechLogo,
         imageAlt: 'Government Technology Agency logo',
       },
       {
-        label: 'May 2025 - Aug 2025',
-        title: 'Contfinity',
-        meta: 'Network Engineer Intern · Singapore',
-        body: 'Implemented HTTPS-enabled syslog forwarding pipelines with Linux and Bash for centralized logging, and produced technical documentation plus infrastructure diagrams for large-scale government clients.',
+        company: 'Contfinity',
+        role: 'Network Engineer Intern',
+        location: 'Singapore',
+        dateRange: 'May 2025 - Aug 2025',
+        duration: '4 months',
+        stack: ['Linux', 'Bash', 'Syslog', 'Network Documentation'],
+        bullets: [
+          'Implemented HTTPS-enabled syslog forwarding pipelines using Linux and Bash for centralized logging systems.',
+          'Produced technical network documentation and infrastructure diagrams for large-scale government clients.',
+        ],
       },
     ],
   },
