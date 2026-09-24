@@ -2,13 +2,14 @@ import type { StaticImageData } from 'next/image';
 
 import bytedanceLogo from '../app/assets/companies/bytedance-logo.webp';
 import govtechLogo from '../app/assets/companies/govtech.webp';
+import eunoiaLogo from '../app/assets/universities/eunoia.png';
 import nusLogo from '../app/assets/universities/kisspng-national-university-of-singapore-west-bengal-natio-national-university-of-singapore-ssl-solutions-5b6615cd1c8121.6941376315334169091168.jpg';
+import uncLogo from '../app/assets/universities/unc.jpeg';
 
 export const NAV_ITEMS = [
   { slug: 'home', label: 'HOME', width: '1.05fr' },
   { slug: 'internships', label: 'INTERNSHIPS', width: '1.34fr' },
   { slug: 'projects', label: 'PROJECTS', width: '1.12fr' },
-  { slug: 'hobbies', label: 'HOBBIES', width: '1.08fr' },
   { slug: 'about', label: 'ABOUT', width: '0.95fr' },
 ] as const;
 
@@ -19,6 +20,7 @@ export type TabCard = {
   body: string;
   label?: string;
   meta?: string;
+  variant?: 'default' | 'rotator';
   image?: StaticImageData;
   imageAlt?: string;
   actionLabel?: string;
@@ -29,7 +31,11 @@ export type TabCard = {
       title: string;
       subtitle: string;
       meta: string;
+      location?: string;
+      dateRange?: string;
       bullets: string[];
+      image?: StaticImageData;
+      imageAlt?: string;
     }[];
   };
 };
@@ -64,15 +70,16 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     stats: ['NUS Double Degree', '4.63 CS GPA', '7 Distinctions'],
     cards: [
       {
-        label: 'Focus',
-        title: 'Visual identity first',
-        body: 'The stadium background does the heavy lifting, so the interface can stay cleaner and less noisy.',
+        label: 'Hobbies',
+        title: 'Football, references, and making things',
+        body: 'Outside work, the main through-line is football culture, collecting strong interface references, and building small experiments that sharpen both taste and technical instincts.',
       },
       {
         label: 'Education',
         title: 'Educational history',
         meta: 'Click to view full details',
-        body: 'Computer Science and Business Administration at NUS, with Eunoia Junior College before that.',
+        variant: 'rotator',
+        body: 'Computer Science and Business Administration at NUS, with an exchange term at UNC Chapel Hill and Eunoia Junior College before that.',
         image: nusLogo,
         imageAlt: 'National University of Singapore logo',
         actionLabel: 'Open education history',
@@ -84,15 +91,33 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
               title: 'National University of Singapore',
               subtitle: 'BSc in Computer Science and BBA in Business Administration',
               meta: 'Singapore · Aug 2023 - May 2027',
+              location: 'Singapore',
+              dateRange: 'Aug 2023 - May 2027',
+              image: nusLogo,
+              imageAlt: 'National University of Singapore logo',
               bullets: [
                 'Double Degree Programme in Computer Science and Business Administration.',
                 'GPA: 4.63 in Computer Science and 4.37 in Business Administration.',
               ],
             },
             {
+              title: 'University of North Carolina at Chapel Hill',
+              subtitle: 'Student Exchange Programme',
+              meta: 'Chapel Hill, North Carolina · Aug 2025 - Dec 2025',
+              location: 'Chapel Hill, North Carolina',
+              dateRange: 'Aug 2025 - Dec 2025',
+              image: uncLogo,
+              imageAlt: 'UNC Chapel Hill logo',
+              bullets: ['Spent one semester on exchange at UNC Chapel Hill during the NUS degree programme.'],
+            },
+            {
               title: 'Eunoia Junior College',
               subtitle: 'GCE A-Level',
               meta: 'Singapore · Jan 2020 - Dec 2021',
+              location: 'Singapore',
+              dateRange: 'Jan 2020 - Dec 2021',
+              image: eunoiaLogo,
+              imageAlt: 'Eunoia Junior College logo',
               bullets: ['Obtained 7 distinctions.'],
             },
           ],
