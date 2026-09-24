@@ -22,6 +22,7 @@ export function ContentCard({
   image,
   imageAlt,
   actionLabel,
+  href,
   modal,
   onClick,
 }: ContentCardProps) {
@@ -31,6 +32,7 @@ export function ContentCard({
   const carouselEntries = variant === 'rotator' ? modal?.entries ?? [] : [];
   const activeEntry = carouselEntries[activeIndex];
   const isInteractive = Boolean(onClick);
+  const isLinked = Boolean(href);
   const useRotator = carouselEntries.length > 0;
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
@@ -114,7 +116,9 @@ export function ContentCard({
       {useRotator && activeEntry ? (
         <div className="flex h-full min-h-0 flex-col">
           <div className="mb-3">
-            <h3 className="section-heading text-[1.55rem] text-white">{title}</h3>
+            <h3 className="section-heading text-[1.55rem] text-white transition-colors duration-150 group-hover:text-[var(--color-fut-yellow)]">
+              {title}
+            </h3>
             {meta ? <p className="mt-2 text-xs tracking-[0.18em] text-white/55 uppercase">{meta}</p> : null}
           </div>
 
@@ -170,12 +174,12 @@ export function ContentCard({
               </div>
             </div>
           </div>
-
-          <p className="mt-4 text-xs tracking-[0.14em] text-white/48 uppercase">Rotates automatically every 5 seconds</p>
         </div>
       ) : (
         <div>
-          <h3 className="section-heading mb-3 text-[1.55rem] text-white">{title}</h3>
+          <h3 className="section-heading mb-3 text-[1.55rem] text-white transition-colors duration-150 group-hover:text-[var(--color-fut-yellow)]">
+            {title}
+          </h3>
           {meta ? <p className="mb-3 text-xs tracking-[0.18em] text-white/55 uppercase">{meta}</p> : null}
           <p className="text-sm leading-6 text-white/74">{body}</p>
         </div>
@@ -189,6 +193,19 @@ export function ContentCard({
     </>
   );
 
+  if (isLinked && href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className="fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6"
+      >
+        {content}
+      </a>
+    );
+  }
+
   if (isInteractive) {
     return (
       <div
@@ -196,12 +213,12 @@ export function ContentCard({
         tabIndex={0}
         onClick={onClick}
         onKeyDown={handleKeyDown}
-        className="fut-tile flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6"
+        className="fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6"
       >
         {content}
       </div>
     );
   }
 
-  return <article className="fut-tile flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left">{content}</article>;
+  return <article className="fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left">{content}</article>;
 }

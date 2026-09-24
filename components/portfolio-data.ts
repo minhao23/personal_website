@@ -7,10 +7,10 @@ import nusLogo from '../app/assets/universities/kisspng-national-university-of-s
 import uncLogo from '../app/assets/universities/unc.jpeg';
 
 export const NAV_ITEMS = [
-  { slug: 'home', label: 'HOME', width: '1.05fr' },
-  { slug: 'internships', label: 'INTERNSHIPS', width: '1.34fr' },
-  { slug: 'projects', label: 'PROJECTS', width: '1.12fr' },
-  { slug: 'about', label: 'ABOUT', width: '0.95fr' },
+  { slug: 'home', width: '1.05fr' },
+  { slug: 'internships', width: '1.34fr' },
+  { slug: 'projects', width: '1.12fr' },
+  { slug: 'about', width: '0.95fr' },
 ] as const;
 
 export type SectionSlug = 'home' | 'internships' | 'projects' | 'hobbies' | 'about' | 'contact';
@@ -21,6 +21,7 @@ export type TabCard = {
   label?: string;
   meta?: string;
   variant?: 'default' | 'rotator';
+  href?: string;
   image?: StaticImageData;
   imageAlt?: string;
   actionLabel?: string;
@@ -63,21 +64,18 @@ export type SectionContent = {
 
 export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
   home: {
-    eyebrow: 'Home',
-    title: 'A sharper FIFA-style portfolio screen.',
+    eyebrow: '',
+    title: 'Ultimate Team',
     description:
-      'The layout now focuses on one clean hero, one simple navbar, and compact panels that stay inside a single screen.',
+      'screen.',
     stats: ['NUS Double Degree', '4.63 CS GPA', '7 Distinctions'],
     cards: [
       {
-        label: 'Hobbies',
-        title: 'Football, references, and making things',
+        title: 'Hobbies',
         body: 'Outside work, the main through-line is football culture, collecting strong interface references, and building small experiments that sharpen both taste and technical instincts.',
       },
       {
-        label: 'Education',
         title: 'Educational history',
-        meta: 'Click to view full details',
         variant: 'rotator',
         body: 'Computer Science and Business Administration at NUS, with an exchange term at UNC Chapel Hill and Eunoia Junior College before that.',
         image: nusLogo,
@@ -124,9 +122,9 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         },
       },
       {
-        label: 'Result',
-        title: 'Single-screen layout',
+        title: 'Practice arena',
         body: 'The page stays compact and readable, so each section feels more like a FUT panel than a long scrolling site.',
+        href: 'https://leetcode.com/u/Minhao23/',
       },
     ],
   },

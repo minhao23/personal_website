@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
+import singaporeFlag from '../app/assets/countries/singapore.png';
 import { NAV_ITEMS, type SectionSlug } from './portfolio-data';
 
 type FutHeaderProps = {
@@ -7,15 +9,15 @@ type FutHeaderProps = {
 };
 
 export function FutHeader({ activeSlug }: FutHeaderProps) {
+  const getNavLabel = (slug: string) => slug.toUpperCase();
+
   return (
     <header className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-5 md:px-8 lg:px-10 lg:pt-6">
       <div className="overflow-hidden rounded-[18px] border border-[#1e2837] bg-[#0d1118]/70 shadow-[0_18px_40px_rgba(0,0,0,0.35)] backdrop-blur-md">
         <div className="flex items-center justify-between gap-4 border-b border-[#243246] bg-[linear-gradient(180deg,rgba(90,108,138,0.88),rgba(66,79,103,0.82))] px-4 py-2">
           <div className="flex min-w-0 items-center gap-4">
             <div className="flex items-center gap-3">
-              <span className="font-[var(--font-display)] text-[2.2rem] leading-none tracking-[0.03em] text-white uppercase">
-                FUT<span className="text-[var(--color-fut-yellow)]">17</span>
-              </span>
+              <Image src={singaporeFlag} alt="Singapore flag" className="h-8 w-auto object-contain" priority />
               <span className="h-10 w-px bg-white/25" />
             </div>
             <div className="min-w-0">
@@ -35,7 +37,7 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
                 <span className="fut-top-label">Coins</span>
                 <div className="flex items-center gap-2">
                   <span className="fut-status-icon fut-status-icon--coin" aria-hidden="true" />
-                  <span className="fut-top-value">216,743</span>
+                  <span className="fut-top-value">&infin;</span>
                 </div>
               </div>
               <div className="fut-status-divider" aria-hidden="true" />
@@ -43,7 +45,7 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
                 <span className="fut-top-label">FIFA Points</span>
                 <div className="flex items-center gap-2">
                   <span className="fut-status-icon fut-status-icon--points" aria-hidden="true" />
-                  <span className="fut-top-value">200</span>
+                  <span className="fut-top-value">&infin;</span>
                 </div>
               </div>
             </div>
@@ -74,7 +76,7 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
                   isActive ? 'active' : 'bg-[#10151d]'
                 }`}
               >
-                <span className="relative top-[1px]">{item.label}</span>
+                <span className="relative top-[1px]">{getNavLabel(item.slug)}</span>
               </Link>
 
             );
