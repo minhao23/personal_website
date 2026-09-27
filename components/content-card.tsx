@@ -19,6 +19,8 @@ export function ContentCard({
   body,
   label,
   meta,
+  muted,
+  stack,
   variant,
   image,
   imageAlt,
@@ -41,7 +43,7 @@ export function ContentCard({
   const showLeetCodeArtwork = decorativeIcon === 'leetcode';
   const containerClassName = useRotator
     ? 'group flex h-full min-h-0 flex-col text-left'
-    : 'fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left';
+    : `fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left ${muted ? 'opacity-[0.72]' : ''}`;
 
   function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (!onClick || event.target !== event.currentTarget) {
@@ -187,8 +189,37 @@ export function ContentCard({
           <h3 className="section-heading mb-3 text-[1.38rem] text-white transition-colors duration-150 group-hover:text-[var(--color-fut-yellow)]">
             {title}
           </h3>
-          {meta ? <p className="mb-3 text-xs tracking-[0.18em] text-white/55 uppercase">{meta}</p> : null}
-          <p className={`${showLeetCodeArtwork ? 'text-white/78' : 'text-white/74'} text-sm leading-6`}>{body}</p>
+          {meta ? (
+            <p className="mb-3 text-[11px] tracking-[0.18em] text-white/55 uppercase">
+              {meta}
+            </p>
+          ) : null}
+          {body ? (
+            <div className="mb-4">
+              <p className="mb-2 font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
+                Description
+              </p>
+              <p className={`${showLeetCodeArtwork ? 'text-white/78' : 'text-white/74'} text-sm leading-6`}>
+                {body}
+              </p>
+            </div>
+          ) : null}
+          {stack && stack.length > 0 ? (
+            <div>
+              <p className="mb-2 font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
+                Tech stack
+              </p>
+              <div className="grid grid-cols-4 gap-2">
+                {stack.map((stackItem) => (
+                  <div key={stackItem} className="rounded-[12px] border border-white/10 bg-black/22 px-2 py-1.5 text-center">
+                    <p className="font-[var(--font-display)] text-[9px] tracking-[0.12em] text-[var(--color-fut-yellow)] uppercase">
+                      {stackItem}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       )}
 

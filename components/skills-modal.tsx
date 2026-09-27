@@ -196,10 +196,10 @@ export function SkillsModal({ onClose }: SkillsModalProps) {
                 Skills
               </p>
               <h2 id="skills-modal-title" className="section-heading mt-2 text-3xl text-white md:text-4xl">
-                4-3-3 skill squad
+                My
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-white/72">
-                Starting eleven above, substitution bench below.
+                4-3-3
               </p>
             </div>
             <button

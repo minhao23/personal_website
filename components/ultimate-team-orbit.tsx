@@ -47,12 +47,12 @@ export function UltimateTeamOrbit() {
   const ActiveLogo = HERO_LOGOS[activeLogoIndex]?.icon ?? HERO_LOGOS[0].icon;
 
   return (
-    <div aria-hidden="true" className="pointer-events-none relative mt-6 flex h-[270px] items-center justify-center overflow-hidden md:h-[310px]">
-      <div className="absolute left-1/2 top-1/2 h-[220px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,208,0,0.16),transparent_68%)] blur-3xl md:h-[280px] md:w-[280px]" />
-      <div className="absolute bottom-[-52px] right-[-34px] h-[240px] w-[240px] md:bottom-[-70px] md:right-[-46px] md:h-[320px] md:w-[320px]">
+    <div aria-hidden="true" className="pointer-events-none relative mt-4 flex min-h-[320px] flex-1 overflow-hidden">
+      <div className="absolute left-[34%] top-[48%] h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(245,208,0,0.18),transparent_68%)] opacity-0 blur-3xl transition-opacity duration-200 group-hover:opacity-100 md:h-[320px] md:w-[320px]" />
+      <div className="absolute bottom-[-26px] right-[-74px] h-[340px] w-[340px] md:bottom-[-34px] md:right-[-94px] md:h-[460px] md:w-[460px]">
         <ActiveLogo className="h-full w-full text-white/16 drop-shadow-[0_22px_38px_rgba(0,0,0,0.28)]" />
       </div>
-      <div className="absolute left-[-42px] top-[28px] h-[110px] w-[110px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] blur-2xl md:h-[140px] md:w-[140px]" />
+      <div className="absolute left-[-42px] top-[18%] h-[110px] w-[110px] rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.05),transparent_70%)] blur-2xl md:h-[140px] md:w-[140px]" />
     </div>
   );
 }

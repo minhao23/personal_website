@@ -27,6 +27,8 @@ export type TabCard = {
   body: string;
   label?: string;
   meta?: string;
+  muted?: boolean;
+  stack?: string[];
   variant?: 'default' | 'rotator';
   href?: string;
   decorativeIcon?: 'leetcode';
@@ -208,19 +210,47 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     stats: ['Builds', 'Case Studies', 'Experiments'],
     cards: [
       {
-        label: 'Project',
-        title: 'Portfolio rebuild',
-        body: 'A cleaner Next.js portfolio built around a strong visual reference and simpler structure.',
+        title: 'Ikizen',
+        body: 'A productivity-focused web app built around task flows, authentication, and a cleaner day-to-day planning experience.',
+        stack: ['TypeScript', 'React', 'CSS', 'Supabase (SQL)', 'Telegram Bot'],
+        href: 'https://github.com/minhao23/busy-bee',
       },
       {
-        label: 'Project',
-        title: 'UI systems lab',
-        body: 'A collection of interface experiments, reusable components, and layout studies.',
+        title: 'Passport photo maker',
+        body: 'A computer vision pipeline that turns raw portraits into passport-ready images with automatic background removal and formatting.',
+        stack: ['Python', 'YOLOv8', 'rembg', 'OpenCV'],
+        href: 'https://github.com/minhao23/passport-photo',
       },
       {
-        label: 'Project',
-        title: 'Case study archive',
-        body: 'A place to document process, decisions, and what each project taught you.',
+        title: 'Gambling',
+        body: 'My first ever project! A react web application that teaches you how to play Poker.',
+        stack: ['JavaScript', 'React', 'CSS', 'WebSockets', 'Firebase (NoSQL)'],
+        href: 'https://github.com/minhao23/gamebling-orbital-24',
+      },
+      {
+        title: 'World Cup picks',
+        body: 'A full-stack picks platform for tournament predictions, scoring logic, and a shared World Cup bracket experience. Website deactivated as the world cup has ended.',
+        stack: ['TypeScript','Next.js', 'Python', 'FastAPI'],
+        href: 'https://github.com/tyhclint/worldcupsiu',
+      },
+      {
+        title: 'Address Book',
+        body: 'A desktop planning tool for real estate sales workflows, focused on structured contact management and follow-up reminders.',
+        stack: ['Java', 'Gradle', 'JavaFX'],
+        href: 'https://github.com/AY2425S1-CS2103-F09-2/tp',
+      },
+      {
+        title: 'Travel planner',
+        body: 'A MCP server that helps to orchestrate travel plans and find flights.',
+        meta: 'Coming soon',
+        muted: true,
+        stack: ['chromaDB', 'Next.js', 'FastAPI', 'Docker', 'FastMCP'],
+        href: 'https://github.com/minhao23/travel-planner',
+      },
+      {
+        title: 'Coming soon...',
+        body: 'More case studies and polished writeups will land here once they are ready to be shown properly.',
+        muted: true,
       },
     ],
   },
@@ -258,8 +288,10 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     cards: [
       {
         label: 'Why',
-        title: 'Built with intention',
-        body: 'The goal is to feel like a real personal brand page, not a starter template with random cards.',
+        title: 'My favourite game',
+        body: 'If this page looks familiar to you (hopefully it does), it is because it was designed after' + 
+        'my favorite game, FIFA 17. It\'s a game I\'ve spent  countless hours on, ' +
+        'and what better way to bring my website to life, than through an interface that defined much of my childhood.',
       },
       {
         title: 'Travels',
