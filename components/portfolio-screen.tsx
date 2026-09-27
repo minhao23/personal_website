@@ -8,6 +8,7 @@ import { ExperienceTimeline } from './experience-timeline';
 import { FutHeader } from './fut-header';
 import { PORTFOLIO_CONTENT, type SectionSlug } from './portfolio-data';
 import { SkillsModal } from './skills-modal';
+import { UltimateTeamOrbit } from './ultimate-team-orbit';
 
 type PortfolioScreenProps = {
   section: SectionSlug;
@@ -18,6 +19,14 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
   const [activeModal, setActiveModal] = useState<NonNullable<(typeof content.cards)[number]['modal']> | null>(null);
   const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
   const isHomeSection = section === 'home';
+  const hasTimeline = Boolean(content.experienceTimeline);
+  const sectionGridClass = 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]';
+  const heroCardClass = hasTimeline
+    ? 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-5 backdrop-blur-sm md:p-6 lg:p-7'
+    : 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8';
+  const heroTitleClass = hasTimeline
+    ? 'section-heading max-w-[12ch] text-[2.7rem] text-white md:text-[3.7rem] md:leading-[0.92]'
+    : 'section-heading max-w-3xl text-[2.7rem] text-white md:text-[4.05rem] md:leading-[0.92]';
 
   function handleHeroKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (!isHomeSection) {
@@ -38,25 +47,25 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
       <FutHeader activeSlug={section} />
 
       <main className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 px-5 py-5 md:px-8 lg:px-10 lg:py-6">
-        <section className="animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+        <section className={sectionGridClass}>
           {isHomeSection ? (
             <button
               type="button"
               onClick={() => setIsSkillsModalOpen(true)}
               onKeyDown={handleHeroKeyDown}
-              className="fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-6 text-left cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6 backdrop-blur-sm md:p-8"
+              className={`${heroCardClass} text-left cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6`}
             >
               <div>
                 <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
                   {content.eyebrow}
                 </p>
-                <h1 className="section-heading max-w-3xl text-4xl text-white md:text-[4.75rem] md:leading-[0.92]">
-                  {content.title}
-                </h1>
+                <h1 className={heroTitleClass}>{content.title}</h1>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-white/74 md:text-base">
                   {content.description}
                 </p>
               </div>
+
+              <UltimateTeamOrbit />
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {content.stats.map((stat) => (
@@ -69,14 +78,12 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
               </div>
             </button>
           ) : (
-            <article className="fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8">
+            <article className={heroCardClass}>
               <div>
                 <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
                   {content.eyebrow}
                 </p>
-                <h1 className="section-heading max-w-3xl text-4xl text-white md:text-[4.75rem] md:leading-[0.92]">
-                  {content.title}
-                </h1>
+                <h1 className={heroTitleClass}>{content.title}</h1>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-white/74 md:text-base">
                   {content.description}
                 </p>

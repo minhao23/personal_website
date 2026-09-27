@@ -2,6 +2,13 @@ import type { StaticImageData } from 'next/image';
 
 import bytedanceLogo from '../app/assets/companies/bytedance-logo.webp';
 import govtechLogo from '../app/assets/companies/govtech.webp';
+import japanFlag from '../app/assets/countries/japan.png';
+import mexicoFlag from '../app/assets/countries/mexico.png';
+import peruFlag from '../app/assets/countries/peru.png';
+import singaporeFlag from '../app/assets/countries/singapore.png';
+import southKoreaFlag from '../app/assets/countries/south-korea.png';
+import thailandFlag from '../app/assets/countries/thailand.png';
+import usaFlag from '../app/assets/countries/united-states-of-america.png';
 import eunoiaLogo from '../app/assets/universities/eunoia.png';
 import nusLogo from '../app/assets/universities/kisspng-national-university-of-singapore-west-bengal-natio-national-university-of-singapore-ssl-solutions-5b6615cd1c8121.6941376315334169091168.jpg';
 import uncLogo from '../app/assets/universities/unc.jpeg';
@@ -22,9 +29,20 @@ export type TabCard = {
   meta?: string;
   variant?: 'default' | 'rotator';
   href?: string;
+  decorativeIcon?: 'leetcode';
   image?: StaticImageData;
   imageAlt?: string;
   actionLabel?: string;
+  rotatorBadge?: string;
+  rotatorEntries?: {
+    title: string;
+    subtitle?: string;
+    meta?: string;
+    location?: string;
+    dateRange?: string;
+    image?: StaticImageData;
+    imageAlt?: string;
+  }[];
   modal?: {
     title: string;
     description: string;
@@ -67,8 +85,8 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     eyebrow: '',
     title: 'Ultimate Team',
     description:
-      'screen.',
-    stats: ['NUS Double Degree', '4.63 CS GPA', '7 Distinctions'],
+      '',
+    stats: [],
     cards: [
       {
         title: 'Hobbies',
@@ -78,6 +96,7 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         title: 'Educational history',
         variant: 'rotator',
         body: 'Computer Science and Business Administration at NUS, with an exchange term at UNC Chapel Hill and Eunoia Junior College before that.',
+        rotatorBadge: 'Education history',
         image: nusLogo,
         imageAlt: 'National University of Singapore logo',
         actionLabel: 'Open education history',
@@ -123,17 +142,18 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
       },
       {
         title: 'Practice arena',
-        body: 'The page stays compact and readable, so each section feels more like a FUT panel than a long scrolling site.',
+        body: 'The grind is free.',
         href: 'https://leetcode.com/u/Minhao23/',
+        decorativeIcon: 'leetcode',
       },
     ],
   },
   internships: {
     eyebrow: 'Internships',
-    title: 'Engineering experience across infrastructure, product systems, and operations.',
+    title: 'Shipping across infra, product, and ops.',
     description:
-      'Your resume shows a mix of software engineering, network operations, automation, testing, and developer tooling across ByteDance, GovTech, and Contfinity.',
-    stats: ['3 Internships', '87% Test Coverage', '61% Faster Queries'],
+      'Work across ByteDance, GovTech, and Contfinity spans internal platforms, network operations, automation, testing, and developer tooling with clear operational impact.',
+    stats: ['3 Internships', '2,000+ Users Served', '61% Faster Queries'],
     cards: [],
     experienceTimeline: [
       {
@@ -230,9 +250,10 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
   },
   about: {
     eyebrow: 'About',
-    title: 'Short, direct, and easier to scan.',
+    title: 'Welcome to my page!',
     description:
-      'The about area should explain your intent quickly, without turning into a long block of text.',
+      'I am Minhao, a computer science and business student at NUS who likes building' + 
+      'things that feel sharp, useful, and well considered. My work has ranged from software engineering at GovTech to data engineering in ByteDance network implementation, and outside the screen I spend my time on the court, the pitch, or in Muay Thai training.',
     stats: ['Clearer', 'Stronger', 'More Personal'],
     cards: [
       {
@@ -241,9 +262,47 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         body: 'The goal is to feel like a real personal brand page, not a starter template with random cards.',
       },
       {
-        label: 'How',
-        title: 'Visual hierarchy first',
-        body: 'The page keeps the palette, typography, and spacing consistent so the stadium reference can lead.',
+        title: 'Travels',
+        variant: 'rotator',
+        body: 'A rotating snapshot of a few places for now, with fuller stories to come later.',
+        rotatorBadge: 'Travels',
+        rotatorEntries: [
+          {
+            title: 'Singapore',
+            image: singaporeFlag,
+            imageAlt: 'Singapore flag',
+          },
+          {
+            title: 'Japan',
+            image: japanFlag,
+            imageAlt: 'Japan flag',
+          },
+          {
+            title: 'South Korea',
+            image: southKoreaFlag,
+            imageAlt: 'South Korea flag',
+          },
+          {
+            title: 'Thailand',
+            image: thailandFlag,
+            imageAlt: 'Thailand flag',
+          },
+          {
+            title: 'United States',
+            image: usaFlag,
+            imageAlt: 'United States flag',
+          },
+          {
+            title: 'Mexico',
+            image: mexicoFlag,
+            imageAlt: 'Mexico flag',
+          },
+          {
+            title: 'Peru',
+            image: peruFlag,
+            imageAlt: 'Peru flag',
+          },
+        ],
       },
       {
         label: 'Next',
