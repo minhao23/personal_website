@@ -9,6 +9,21 @@ import singaporeFlag from '../app/assets/countries/singapore.png';
 import southKoreaFlag from '../app/assets/countries/south-korea.png';
 import thailandFlag from '../app/assets/countries/thailand.png';
 import usaFlag from '../app/assets/countries/united-states-of-america.png';
+import japanTrip1 from '../app/assets/countries/carousel/japan/japan1.jpg';
+import japanTrip2 from '../app/assets/countries/carousel/japan/japan2.jpg';
+import japanTrip3 from '../app/assets/countries/carousel/japan/japan3.jpg';
+import mexicoTrip1 from '../app/assets/countries/carousel/mexico/mexico1.jpg';
+import mexicoTrip2 from '../app/assets/countries/carousel/mexico/mexico2.jpg';
+import mexicoTrip3 from '../app/assets/countries/carousel/mexico/mexico3.jpg';
+import mexicoTrip4 from '../app/assets/countries/carousel/mexico/mexico4.jpg';
+import peruTrip1 from '../app/assets/countries/carousel/peru/peru1.jpg';
+import peruTrip2 from '../app/assets/countries/carousel/peru/peru2.jpg';
+import peruTrip3 from '../app/assets/countries/carousel/peru/peru3.jpg';
+import usaTrip1 from '../app/assets/countries/carousel/usa/usa1.jpg';
+import usaTrip2 from '../app/assets/countries/carousel/usa/usa2.jpg';
+import usaTrip3 from '../app/assets/countries/carousel/usa/usa3.jpg';
+import usaTrip4 from '../app/assets/countries/carousel/usa/usa4.jpg';
+import usaTrip5 from '../app/assets/countries/carousel/usa/usa5.jpg';
 import eunoiaLogo from '../app/assets/universities/eunoia.png';
 import nusLogo from '../app/assets/universities/kisspng-national-university-of-singapore-west-bengal-natio-national-university-of-singapore-ssl-solutions-5b6615cd1c8121.6941376315334169091168.jpg';
 import uncLogo from '../app/assets/universities/unc.jpeg';
@@ -45,21 +60,98 @@ export type TabCard = {
     image?: StaticImageData;
     imageAlt?: string;
   }[];
-  modal?: {
-    title: string;
-    description: string;
-    entries: {
-      title: string;
-      subtitle: string;
-      meta: string;
-      location?: string;
-      dateRange?: string;
-      bullets: string[];
-      image?: StaticImageData;
-      imageAlt?: string;
-    }[];
-  };
+  modal?:
+    | {
+        kind?: 'timeline';
+        title: string;
+        description: string;
+        entries: {
+          title: string;
+          subtitle: string;
+          meta: string;
+          location?: string;
+          dateRange?: string;
+          bullets: string[];
+          image?: StaticImageData;
+          imageAlt?: string;
+        }[];
+      }
+    | {
+        kind: 'travel-showcase';
+        title: string;
+        description: string;
+        entries: {
+          title: string;
+          image: StaticImageData;
+          imageAlt?: string;
+          gallery?: {
+            image: StaticImageData;
+            alt?: string;
+          }[];
+        }[];
+      };
 };
+
+const TRAVEL_COUNTRIES = [
+  {
+    title: 'Singapore',
+    image: singaporeFlag,
+    imageAlt: 'Singapore flag',
+  },
+  {
+    title: 'Japan',
+    image: japanFlag,
+    imageAlt: 'Japan flag',
+    gallery: [
+      { image: japanTrip1, alt: 'Japan travel photo 1' },
+      { image: japanTrip2, alt: 'Japan travel photo 2' },
+      { image: japanTrip3, alt: 'Japan travel photo 3' },
+    ],
+  },
+  {
+    title: 'South Korea',
+    image: southKoreaFlag,
+    imageAlt: 'South Korea flag',
+  },
+  {
+    title: 'Thailand',
+    image: thailandFlag,
+    imageAlt: 'Thailand flag',
+  },
+  {
+    title: 'United States',
+    image: usaFlag,
+    imageAlt: 'United States flag',
+    gallery: [
+      { image: usaTrip1, alt: 'United States travel photo 1' },
+      { image: usaTrip2, alt: 'United States travel photo 2' },
+      { image: usaTrip3, alt: 'United States travel photo 3' },
+      { image: usaTrip4, alt: 'United States travel photo 4' },
+      { image: usaTrip5, alt: 'United States travel photo 5' },
+    ],
+  },
+  {
+    title: 'Mexico',
+    image: mexicoFlag,
+    imageAlt: 'Mexico flag',
+    gallery: [
+      { image: mexicoTrip1, alt: 'Mexico travel photo 1' },
+      { image: mexicoTrip2, alt: 'Mexico travel photo 2' },
+      { image: mexicoTrip3, alt: 'Mexico travel photo 3' },
+      { image: mexicoTrip4, alt: 'Mexico travel photo 4' },
+    ],
+  },
+  {
+    title: 'Peru',
+    image: peruFlag,
+    imageAlt: 'Peru flag',
+    gallery: [
+      { image: peruTrip1, alt: 'Peru travel photo 1' },
+      { image: peruTrip2, alt: 'Peru travel photo 2' },
+      { image: peruTrip3, alt: 'Peru travel photo 3' },
+    ],
+  },
+] as const;
 
 export type ExperienceEntry = {
   company: string;
@@ -289,7 +381,7 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
       {
         label: 'Why',
         title: 'My favourite game',
-        body: 'If this page looks familiar to you (hopefully it does), it is because it was designed after' + 
+        body: 'If this page looks familiar to you (hopefully it does), it is because it was designed after ' + 
         'my favorite game, FIFA 17. It\'s a game I\'ve spent  countless hours on, ' +
         'and what better way to bring my website to life, than through an interface that defined much of my childhood.',
       },
@@ -298,43 +390,13 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         variant: 'rotator',
         body: 'A rotating snapshot of a few places for now, with fuller stories to come later.',
         rotatorBadge: 'Travels',
-        rotatorEntries: [
-          {
-            title: 'Singapore',
-            image: singaporeFlag,
-            imageAlt: 'Singapore flag',
-          },
-          {
-            title: 'Japan',
-            image: japanFlag,
-            imageAlt: 'Japan flag',
-          },
-          {
-            title: 'South Korea',
-            image: southKoreaFlag,
-            imageAlt: 'South Korea flag',
-          },
-          {
-            title: 'Thailand',
-            image: thailandFlag,
-            imageAlt: 'Thailand flag',
-          },
-          {
-            title: 'United States',
-            image: usaFlag,
-            imageAlt: 'United States flag',
-          },
-          {
-            title: 'Mexico',
-            image: mexicoFlag,
-            imageAlt: 'Mexico flag',
-          },
-          {
-            title: 'Peru',
-            image: peruFlag,
-            imageAlt: 'Peru flag',
-          },
-        ],
+        rotatorEntries: [...TRAVEL_COUNTRIES],
+        modal: {
+          kind: 'travel-showcase',
+          title: 'Travels',
+          description: 'A FIFA-style country carousel for a few places so far. Use the arrows to cycle through them.',
+          entries: [...TRAVEL_COUNTRIES],
+        },
       },
       {
         label: 'Next',

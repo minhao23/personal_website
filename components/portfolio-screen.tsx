@@ -2,6 +2,7 @@
 
 import { useState, type KeyboardEvent } from 'react';
 
+import { ContactModal } from './contact-modal';
 import { ContentCard } from './content-card';
 import { DetailModal } from './detail-modal';
 import { ExperienceTimeline } from './experience-timeline';
@@ -18,6 +19,7 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
   const content = PORTFOLIO_CONTENT[section];
   const [activeModal, setActiveModal] = useState<NonNullable<(typeof content.cards)[number]['modal']> | null>(null);
   const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const isHomeSection = section === 'home';
   const isProjectsSection = section === 'projects';
   const projectBottomCardIndex = content.cards.length - 1;
@@ -49,7 +51,7 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,10,0.12)_0%,rgba(7,8,10,0.5)_38%,rgba(7,8,10,0.9)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_center,rgba(245,208,0,0.1),transparent_34%)]" />
 
-      <FutHeader activeSlug={section} />
+      <FutHeader activeSlug={section} onContactClick={() => setIsContactModalOpen(true)} />
 
       <main className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 px-5 py-5 md:px-8 lg:px-10 lg:py-6">
         <section className={sectionGridClass}>
@@ -144,6 +146,7 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
       </main>
 
       {activeModal ? <DetailModal modal={activeModal} onClose={() => setActiveModal(null)} /> : null}
+      {isContactModalOpen ? <ContactModal onClose={() => setIsContactModalOpen(false)} /> : null}
       {isSkillsModalOpen ? <SkillsModal onClose={() => setIsSkillsModalOpen(false)} /> : null}
     </div>
   );

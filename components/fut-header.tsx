@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -6,9 +8,10 @@ import { NAV_ITEMS, type SectionSlug } from './portfolio-data';
 
 type FutHeaderProps = {
   activeSlug: SectionSlug;
+  onContactClick: () => void;
 };
 
-export function FutHeader({ activeSlug }: FutHeaderProps) {
+export function FutHeader({ activeSlug, onContactClick }: FutHeaderProps) {
   const getNavLabel = (slug: string) => slug.toUpperCase();
 
   return (
@@ -50,13 +53,13 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
               </div>
             </div>
 
-            <Link
-              href="/contact"
-              aria-current={activeSlug === 'contact' ? 'page' : undefined}
-              className={`fut-contact-button ${activeSlug === 'contact' ? 'fut-contact-button--active' : ''}`}
+            <button
+              type="button"
+              onClick={onContactClick}
+              className="fut-contact-button"
             >
               Contact
-            </Link>
+            </button>
           </div>
         </div>
 
