@@ -1,7 +1,7 @@
 import type { StaticImageData } from 'next/image';
 
-import bytedanceLogo from '../app/assets/companies/bytedance-logo.webp';
-import govtechLogo from '../app/assets/companies/govtech.webp';
+import bytedanceLogo from '../app/assets/companies/bytedance.png';
+import govtechLogo from '../app/assets/companies/govtech.png';
 import japanFlag from '../app/assets/countries/japan.png';
 import mexicoFlag from '../app/assets/countries/mexico.png';
 import peruFlag from '../app/assets/countries/peru.png';
@@ -25,8 +25,8 @@ import usaTrip2 from '../app/assets/countries/carousel/usa/usa2.jpg';
 import usaTrip3 from '../app/assets/countries/carousel/usa/usa3.jpg';
 import usaTrip4 from '../app/assets/countries/carousel/usa/usa4.jpg';
 import usaTrip5 from '../app/assets/countries/carousel/usa/usa5.jpg';
-import eunoiaLogo from '../app/assets/universities/eunoia.png';
-import nusLogo from '../app/assets/universities/kisspng-national-university-of-singapore-west-bengal-natio-national-university-of-singapore-ssl-solutions-5b6615cd1c8121.6941376315334169091168.jpg';
+import eunoiaLogo from '../app/assets/universities/EJC_wordmark (1).avif';
+import nusLogo from '../app/assets/universities/nus.png';
 import uncLogo from '../app/assets/universities/unc.jpeg';
 
 export const NAV_ITEMS = [
@@ -165,6 +165,7 @@ export type ExperienceEntry = {
   bullets: string[];
   image?: StaticImageData;
   imageAlt?: string;
+  logoClassName?: string;
 };
 
 export type SectionContent = {
@@ -172,6 +173,11 @@ export type SectionContent = {
   title: string;
   description: string;
   stats: string[];
+  certifications?: {
+    title: string;
+    issuer: string;
+    issued: string;
+  }[];
   heroParagraphs?: string[];
   heroImageCaption?: string;
   cards: TabCard[];
@@ -282,7 +288,24 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     title: 'Shipping across infra, product, and ops.',
     description:
       'Work across ByteDance, GovTech, and Contfinity spans internal platforms, network operations, automation, testing, and developer tooling with clear operational impact.',
-    stats: ['3 Internships', '2,000+ Users Served', '61% Faster Queries'],
+    stats: [],
+    certifications: [
+      {
+        title: 'Applied Software Engineering Fundamentals',
+        issuer: 'IBM',
+        issued: 'Issued Jul 2025',
+      },
+      {
+        title: 'Foundations of Cybersecurity',
+        issuer: 'Google',
+        issued: 'Issued Jun 2025',
+      },
+      {
+        title: 'Google Cybersecurity Specialization',
+        issuer: 'Google',
+        issued: 'Issued Jun 2025',
+      },
+    ],
     cards: [],
     experienceTimeline: [
       {
@@ -299,12 +322,13 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         ],
         image: bytedanceLogo,
         imageAlt: 'ByteDance logo',
+        logoClassName: 'w-[138px] h-auto',
       },
       {
         company: 'Government Technology Agency',
         role: 'Software Engineer Intern',
         location: 'Singapore',
-        dateRange: 'Jan 2026 - Present',
+        dateRange: 'Jan 2026 - Aug 2026',
         duration: '8 months',
         stack: ['Next.js', 'FastAPI', 'AWS', 'PostgreSQL', 'Docker', 'Playwright'],
         bullets: [
@@ -314,6 +338,7 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         ],
         image: govtechLogo,
         imageAlt: 'Government Technology Agency logo',
+        logoClassName: 'w-[72px] h-auto',
       },
       {
         company: 'Contfinity',

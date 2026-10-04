@@ -8,6 +8,7 @@ export type TimelineEvent = {
   location?: string;
   logo?: StaticImageData;
   logoAlt?: string;
+  logoClassName?: string;
   title?: string;
   duration?: string;
   tags?: string[];
@@ -54,7 +55,7 @@ export function TimelineList({ events, scrollable = false, cardClassName = '' }:
                   <Image
                     src={event.logo}
                     alt={event.logoAlt ?? `${event.name} logo`}
-                    className="h-10 w-auto shrink-0 object-contain opacity-95"
+                    className={`${event.logoClassName ?? 'h-10 w-auto'} shrink-0 object-contain opacity-95`}
                   />
                 ) : null}
               </div>

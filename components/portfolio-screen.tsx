@@ -23,6 +23,7 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const isHomeSection = section === 'home';
   const isAboutSection = section === 'about';
+  const isInternshipsSection = section === 'internships';
   const isProjectsSection = section === 'projects';
   const projectBottomCardIndex = content.cards.length - 1;
   const hasTimeline = Boolean(content.experienceTimeline);
@@ -30,9 +31,11 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
     ? 'animate-in grid min-h-0 flex-1 content-start gap-4 overflow-y-auto px-1 pt-1 pb-2 md:grid-cols-2'
     : isAboutSection
       ? 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.22fr_0.78fr]'
+      : isInternshipsSection
+        ? 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.14fr_0.86fr]'
       : 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]';
   const heroCardClass = hasTimeline
-    ? 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-5 backdrop-blur-sm md:p-6 lg:p-7'
+    ? `fut-tile flex min-h-0 flex-col rounded-[30px] bg-black/28 p-5 backdrop-blur-sm md:p-6 lg:p-7 ${isInternshipsSection ? 'overflow-y-auto' : 'justify-between'}`
     : 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8';
   const homeHeroCardClass = 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 text-left backdrop-blur-sm';
   const aboutHeroCardClass = 'fut-tile flex min-h-0 flex-col rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8';
@@ -108,8 +111,28 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
               ) : null}
             </button>
           ) : (
-            <article className={isAboutSection ? aboutHeroCardClass : heroCardClass}>
-              {isAboutSection && content.heroImage ? (
+            <article className={`${isAboutSection ? aboutHeroCardClass : heroCardClass} ${isInternshipsSection ? 'lg:order-2' : ''}`}>
+              {isInternshipsSection && content.certifications?.length ? (
+                <div className="grid gap-3">
+                  {content.certifications.map((certification) => (
+                    <div
+                      key={`${certification.title}-${certification.issuer}`}
+                      className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
+                    >
+                      <p className="font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
+                        Certifications
+                      </p>
+                      <h3 className="mt-2 font-[var(--font-display)] text-[1rem] leading-[1.1] text-white">
+                        {certification.title}
+                      </h3>
+                      <p className="mt-2 text-[11px] tracking-[0.16em] text-white/55 uppercase">
+                        {certification.issuer}
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-white/74">{certification.issued}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : isAboutSection && content.heroImage ? (
                 <>
                   <div>
                     <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
@@ -158,7 +181,27 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
                 </div>
               )}
 
-              {content.stats.length > 0 ? (
+              {!isInternshipsSection && content.certifications?.length ? (
+                <div className="mt-6 grid gap-3 lg:grid-cols-3">
+                  {content.certifications.map((certification) => (
+                    <div
+                      key={`${certification.title}-${certification.issuer}`}
+                      className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
+                    >
+                      <p className="font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
+                        Certifications
+                      </p>
+                      <h3 className="mt-2 font-[var(--font-display)] text-[1rem] leading-[1.1] text-white">
+                        {certification.title}
+                      </h3>
+                      <p className="mt-2 text-[11px] tracking-[0.16em] text-white/55 uppercase">
+                        {certification.issuer}
+                      </p>
+                      <p className="mt-1 text-sm leading-6 text-white/74">{certification.issued}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : content.stats.length > 0 ? (
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {content.stats.map((stat) => (
                   <div key={stat} className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-3">
@@ -173,7 +216,9 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
           )}
 
           {isProjectsSection ? null : content.experienceTimeline ? (
-            <ExperienceTimeline entries={content.experienceTimeline} />
+            <div className={isInternshipsSection ? 'min-h-0 lg:order-1' : 'min-h-0'}>
+              <ExperienceTimeline entries={content.experienceTimeline} />
+            </div>
           ) : isAboutSection ? (
             <div className="flex min-h-0 flex-col gap-4">
               {content.cards.map((card, index) => {

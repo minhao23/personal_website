@@ -12,6 +12,7 @@ export function ExperienceTimeline({ entries }: ExperienceTimelineProps) {
     location: entry.location,
     logo: entry.image,
     logoAlt: entry.imageAlt,
+    logoClassName: entry.logoClassName,
     title: entry.role,
     duration: entry.duration,
     tags: entry.stack,
