@@ -189,7 +189,7 @@ export function SkillsModal({ onClose }: SkillsModalProps) {
         aria-labelledby="skills-modal-title"
         className="relative z-10 flex w-full max-w-7xl flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#0c1118]/95 shadow-[0_25px_70px_rgba(0,0,0,0.45)]"
       >
-        <div className="border-b border-white/10 px-5 py-4 md:px-7">
+        <div className="px-5 py-4 md:px-7">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="font-[var(--font-display)] text-sm tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
@@ -214,9 +214,6 @@ export function SkillsModal({ onClose }: SkillsModalProps) {
 
         <div className="px-4 py-4 md:px-6 md:py-5">
           <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(245,208,0,0.1),transparent_30%),linear-gradient(180deg,rgba(18,28,19,0.95),rgba(8,12,18,0.98))] p-3 md:p-5">
-            <div className="pointer-events-none absolute inset-x-[8%] top-[13%] h-px bg-white/12" />
-            <div className="pointer-events-none absolute inset-x-[12%] top-[38%] h-px bg-white/10" />
-            <div className="pointer-events-none absolute inset-x-[8%] top-[61%] h-px bg-white/10" />
             <div className="pointer-events-none absolute bottom-[22%] left-1/2 top-[8%] w-px -translate-x-1/2 bg-white/10" />
             <div className="pointer-events-none absolute left-1/2 top-[47%] h-20 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10" />
 
@@ -237,7 +234,6 @@ export function SkillsModal({ onClose }: SkillsModalProps) {
                   <p className="font-[var(--font-display)] text-xs tracking-[0.24em] text-[var(--color-fut-yellow)] uppercase">
                     Substitution Bench
                   </p>
-                  <div className="h-px flex-1 bg-white/10" />
                 </div>
                 <div className="grid grid-cols-3 gap-3 md:grid-cols-5">
                   {BENCH_SKILLS.map((player) => (

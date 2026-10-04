@@ -5,6 +5,7 @@ import govtechLogo from '../app/assets/companies/govtech.webp';
 import japanFlag from '../app/assets/countries/japan.png';
 import mexicoFlag from '../app/assets/countries/mexico.png';
 import peruFlag from '../app/assets/countries/peru.png';
+import profilePic from '../app/assets/profile_pic.jpg';
 import singaporeFlag from '../app/assets/countries/singapore.png';
 import southKoreaFlag from '../app/assets/countries/south-korea.png';
 import thailandFlag from '../app/assets/countries/thailand.png';
@@ -46,7 +47,7 @@ export type TabCard = {
   stack?: string[];
   variant?: 'default' | 'rotator';
   href?: string;
-  decorativeIcon?: 'leetcode';
+  decorativeIcon?: 'leetcode' | 'profile';
   image?: StaticImageData;
   imageAlt?: string;
   actionLabel?: string;
@@ -84,7 +85,7 @@ export type TabCard = {
           title: string;
           image: StaticImageData;
           imageAlt?: string;
-          gallery?: {
+          gallery?: readonly {
             image: StaticImageData;
             alt?: string;
           }[];
@@ -170,8 +171,12 @@ export type SectionContent = {
   title: string;
   description: string;
   stats: string[];
+  heroParagraphs?: string[];
+  heroImageCaption?: string;
   cards: TabCard[];
   experienceTimeline?: ExperienceEntry[];
+  heroImage?: StaticImageData;
+  heroImageAlt?: string;
 };
 
 export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
@@ -193,6 +198,35 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         rotatorBadge: 'Education history',
         image: nusLogo,
         imageAlt: 'National University of Singapore logo',
+        rotatorEntries: [
+          {
+            title: 'National University of Singapore',
+            subtitle: 'BSc in Computer Science and BBA in Business Administration',
+            meta: 'Singapore · Aug 2023 - May 2027',
+            location: 'Singapore',
+            dateRange: 'Aug 2023 - May 2027',
+            image: nusLogo,
+            imageAlt: 'National University of Singapore logo',
+          },
+          {
+            title: 'University of North Carolina at Chapel Hill',
+            subtitle: 'Student Exchange Programme',
+            meta: 'Chapel Hill, North Carolina · Aug 2025 - Dec 2025',
+            location: 'Chapel Hill, North Carolina',
+            dateRange: 'Aug 2025 - Dec 2025',
+            image: uncLogo,
+            imageAlt: 'UNC Chapel Hill logo',
+          },
+          {
+            title: 'Eunoia Junior College',
+            subtitle: 'GCE A-Level',
+            meta: 'Singapore · Jan 2020 - Dec 2021',
+            location: 'Singapore',
+            dateRange: 'Jan 2020 - Dec 2021',
+            image: eunoiaLogo,
+            imageAlt: 'Eunoia Junior College logo',
+          },
+        ],
         actionLabel: 'Open education history',
         modal: {
           title: 'Educational history',
@@ -374,9 +408,16 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     eyebrow: 'About',
     title: 'Welcome to my page!',
     description:
-      'I am Minhao, a computer science and business student at NUS who likes building' + 
-      'things that feel sharp, useful, and well considered. My work has ranged from software engineering at GovTech to data engineering in ByteDance network implementation, and outside the screen I spend my time on the court, the pitch, or in Muay Thai training.',
-    stats: ['Clearer', 'Stronger', 'More Personal'],
+      'I am Minhao, a computer science and business student at NUS who likes building things that feel sharp, useful, and well considered.',
+    stats: [],
+    heroParagraphs: [
+      'What draws me most to software is the mix of systems thinking and taste. I enjoy the challenge of turning something complex into an experience that feels obvious, calm, and intentional once it is in front of the user.',
+      'So far, that has taken me from software engineering work at GovTech to data engineering work in ByteDance network implementation, where I have worked on problems that sit closer to real users, real operations, and real constraints than classroom projects usually do.',
+      'Outside of school and internships, I spend most of my time on the tennis court, the football pitch, or in Muay Thai training. I also like collecting references and turning them into interfaces, which is probably why this site ended up looking like a FIFA screen in the first place.',
+    ],
+    heroImage: profilePic,
+    heroImageAlt: 'Profile photo of He Minhao',
+    heroImageCaption: 'Me in Cebu, 2025',
     cards: [
       {
         label: 'Why',
@@ -399,9 +440,9 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         },
       },
       {
-        label: 'Next',
-        title: 'Real content later',
-        body: 'Your real bio, internship details, and project links can replace the placeholder copy next.',
+        label: 'Outside work',
+        title: 'Off the clock',
+        body: 'Away from the screen, most of my time goes into tennis, football, Muay Thai, and the kind of references that quietly shape how I build things.',
       },
     ],
   },

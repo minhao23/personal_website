@@ -29,18 +29,18 @@ export function ContentCard({
   decorativeIcon,
   rotatorBadge,
   rotatorEntries,
-  modal,
   onClick,
 }: ContentCardProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [transitionStage, setTransitionStage] = useState<'idle' | 'exiting' | 'entering'>('idle');
   const timeoutIdsRef = useRef<number[]>([]);
-  const carouselEntries = variant === 'rotator' ? rotatorEntries ?? modal?.entries ?? [] : [];
+  const carouselEntries = variant === 'rotator' ? rotatorEntries ?? [] : [];
   const activeEntry = carouselEntries[activeIndex];
   const isInteractive = Boolean(onClick);
   const isLinked = Boolean(href);
   const useRotator = carouselEntries.length > 0;
   const showLeetCodeArtwork = decorativeIcon === 'leetcode';
+  const showProfileArtwork = decorativeIcon === 'profile' && image;
   const containerClassName = useRotator
     ? 'group flex h-full min-h-0 flex-col text-left'
     : `fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left ${muted ? 'opacity-[0.72]' : ''}`;
@@ -115,10 +115,24 @@ export function ContentCard({
         </>
       ) : null}
 
+      {showProfileArtwork ? (
+        <>
+          <div className="pointer-events-none absolute bottom-[-12px] right-[-8px] z-0 h-[148px] w-[118px] overflow-hidden rounded-[24px] border border-white/12 bg-white/6 shadow-[0_16px_36px_rgba(0,0,0,0.22)] md:bottom-[-16px] md:right-[-14px] md:h-[190px] md:w-[148px]">
+            <Image
+              src={image}
+              alt={imageAlt ?? title}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(8,12,18,0.18)_100%)]" />
+          </div>
+          <div className="pointer-events-none absolute right-[28px] top-[28px] z-0 h-16 w-16 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.12),transparent_68%)] blur-xl md:right-[40px] md:top-[32px]" />
+        </>
+      ) : null}
+
       {useRotator && activeEntry ? (
         <div className="relative z-10 flex h-full min-h-0 flex-col">
           <div
-            className={`relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(140deg,rgba(245,208,0,0.14),rgba(18,25,35,0.96)_45%,rgba(12,17,24,0.96)_100%)] p-4 transition-all duration-300 ease-out group-hover:border-[var(--color-fut-yellow)] ${
+            className={`relative flex min-h-0 flex-1 flex-col items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(140deg,rgba(245,208,0,0.14),rgba(18,25,35,0.96)_45%,rgba(12,17,24,0.96)_100%)] p-4 text-center transition-all duration-300 ease-out group-hover:border-[var(--color-fut-yellow)] ${
               transitionStage === 'exiting'
                 ? 'translate-x-6 scale-[0.98] opacity-0'
                 : transitionStage === 'entering'
@@ -127,7 +141,16 @@ export function ContentCard({
             }`}
           >
             <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[linear-gradient(270deg,rgba(245,208,0,0.08),transparent)]" />
-            <div className="relative flex items-start justify-between gap-4">
+            <div className="relative flex w-full max-w-[24rem] flex-col items-center">
+              {activeEntry.image ? (
+                <div className="mb-4 shrink-0">
+                  <Image
+                    src={activeEntry.image}
+                    alt={activeEntry.imageAlt ?? activeEntry.title}
+                    className="h-10 w-auto object-contain"
+                  />
+                </div>
+              ) : null}
               <div className="min-w-0">
                 {rotatorBadge ? (
                   <p className="font-[var(--font-display)] text-[10px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
@@ -144,23 +167,14 @@ export function ContentCard({
                   </p>
                 ) : null}
               </div>
-              {activeEntry.image ? (
-                <div className="shrink-0">
-                  <Image
-                    src={activeEntry.image}
-                    alt={activeEntry.imageAlt ?? activeEntry.title}
-                    className="h-10 w-auto object-contain"
-                  />
-                </div>
-              ) : null}
             </div>
 
-            <div className="relative mt-4 flex-1">
+            <div className="relative mt-4 max-w-[24rem] flex-1">
               {activeEntry.subtitle ? <p className="text-sm leading-6 text-white/82">{activeEntry.subtitle}</p> : null}
             </div>
 
-            <div className="relative mt-5 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
+            <div className="relative mt-5 flex items-center justify-center gap-3">
+              <div className="flex items-center justify-center gap-2">
                 {carouselEntries.map((entry, index) => (
                   <span
                     key={entry.title}
@@ -175,7 +189,7 @@ export function ContentCard({
           </div>
         </div>
       ) : (
-        <div className={`relative z-10 ${showLeetCodeArtwork ? 'max-w-[62%] md:max-w-[55%]' : ''}`}>
+        <div className={`relative z-10 ${showLeetCodeArtwork || showProfileArtwork ? 'max-w-[62%] md:max-w-[55%]' : ''}`}>
           <div className="mb-4 flex items-start justify-between gap-3">
             {label ? (
               <p className="font-[var(--font-display)] text-[11px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
@@ -184,7 +198,7 @@ export function ContentCard({
             ) : (
               <span />
             )}
-            {image ? <Image src={image} alt={imageAlt ?? title} className="h-10 w-auto object-contain" /> : null}
+            {image && !showProfileArtwork ? <Image src={image} alt={imageAlt ?? title} className="h-10 w-auto object-contain" /> : null}
           </div>
           <h3 className="section-heading mb-3 text-[1.38rem] text-white transition-colors duration-150 group-hover:text-[var(--color-fut-yellow)]">
             {title}
@@ -199,7 +213,7 @@ export function ContentCard({
               <p className="mb-2 font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
                 Description
               </p>
-              <p className={`${showLeetCodeArtwork ? 'text-white/78' : 'text-white/74'} text-sm leading-6`}>
+              <p className={`${showLeetCodeArtwork || showProfileArtwork ? 'text-white/78' : 'text-white/74'} text-sm leading-6`}>
                 {body}
               </p>
             </div>
