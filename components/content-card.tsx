@@ -18,6 +18,7 @@ export function ContentCard({
   title,
   body,
   label,
+  labelHover,
   meta,
   muted,
   stack,
@@ -132,7 +133,7 @@ export function ContentCard({
       {useRotator && activeEntry ? (
         <div className="relative z-10 flex h-full min-h-0 flex-col">
           <div
-            className={`relative flex min-h-0 flex-1 flex-col items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(140deg,rgba(245,208,0,0.14),rgba(18,25,35,0.96)_45%,rgba(12,17,24,0.96)_100%)] p-4 text-center transition-all duration-300 ease-out group-hover:border-[var(--color-fut-yellow)] ${
+            className={`relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[linear-gradient(140deg,rgba(245,208,0,0.14),rgba(18,25,35,0.96)_45%,rgba(12,17,24,0.96)_100%)] p-4 transition-all duration-300 ease-out group-hover:border-[var(--color-fut-yellow)] ${
               transitionStage === 'exiting'
                 ? 'translate-x-6 scale-[0.98] opacity-0'
                 : transitionStage === 'entering'
@@ -141,16 +142,7 @@ export function ContentCard({
             }`}
           >
             <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[linear-gradient(270deg,rgba(245,208,0,0.08),transparent)]" />
-            <div className="relative flex w-full max-w-[24rem] flex-col items-center">
-              {activeEntry.image ? (
-                <div className="mb-4 shrink-0">
-                  <Image
-                    src={activeEntry.image}
-                    alt={activeEntry.imageAlt ?? activeEntry.title}
-                    className="h-10 w-auto object-contain"
-                  />
-                </div>
-              ) : null}
+            <div className="relative flex items-start justify-between gap-4">
               <div className="min-w-0">
                 {rotatorBadge ? (
                   <p className="font-[var(--font-display)] text-[10px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
@@ -167,14 +159,23 @@ export function ContentCard({
                   </p>
                 ) : null}
               </div>
+              {activeEntry.image ? (
+                <div className="shrink-0">
+                  <Image
+                    src={activeEntry.image}
+                    alt={activeEntry.imageAlt ?? activeEntry.title}
+                    className="h-10 w-auto object-contain"
+                  />
+                </div>
+              ) : null}
             </div>
 
-            <div className="relative mt-4 max-w-[24rem] flex-1">
+            <div className="relative mt-4 flex-1">
               {activeEntry.subtitle ? <p className="text-sm leading-6 text-white/82">{activeEntry.subtitle}</p> : null}
             </div>
 
-            <div className="relative mt-5 flex items-center justify-center gap-3">
-              <div className="flex items-center justify-center gap-2">
+            <div className="relative mt-5 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
                 {carouselEntries.map((entry, index) => (
                   <span
                     key={entry.title}
@@ -193,7 +194,8 @@ export function ContentCard({
           <div className="mb-4 flex items-start justify-between gap-3">
             {label ? (
               <p className="font-[var(--font-display)] text-[11px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
-                {label}
+                <span className={labelHover ? 'group-hover:hidden' : ''}>{label}</span>
+                {labelHover ? <span className="hidden group-hover:inline">{labelHover}</span> : null}
               </p>
             ) : (
               <span />
@@ -210,9 +212,6 @@ export function ContentCard({
           ) : null}
           {body ? (
             <div className="mb-4">
-              <p className="mb-2 font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
-                Description
-              </p>
               <p className={`${showLeetCodeArtwork || showProfileArtwork ? 'text-white/78' : 'text-white/74'} text-sm leading-6`}>
                 {body}
               </p>

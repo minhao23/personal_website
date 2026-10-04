@@ -42,6 +42,7 @@ export type TabCard = {
   title: string;
   body: string;
   label?: string;
+  labelHover?: string;
   meta?: string;
   muted?: boolean;
   stack?: string[];
@@ -421,6 +422,7 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     cards: [
       {
         label: 'Why',
+        labelHover: 'View highlights',
         title: 'My favourite game',
         body: 'If this page looks familiar to you (hopefully it does), it is because it was designed after ' + 
         'my favorite game, FIFA 17. It\'s a game I\'ve spent  countless hours on, ' +
