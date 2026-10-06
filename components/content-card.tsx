@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SiLeetcode } from 'react-icons/si';
 
 import type { TabCard } from './portfolio-data';
@@ -45,17 +45,6 @@ export function ContentCard({
   const containerClassName = useRotator
     ? 'group flex h-full min-h-0 flex-col text-left'
     : `fut-tile group flex h-full min-h-0 flex-col rounded-[24px] p-5 text-left ${muted ? 'opacity-[0.72]' : ''}`;
-
-  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (!onClick || event.target !== event.currentTarget) {
-      return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onClick();
-    }
-  }
 
   const clearQueuedTimeouts = useCallback(() => {
     timeoutIdsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
@@ -259,15 +248,13 @@ export function ContentCard({
 
   if (isInteractive) {
     return (
-      <div
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
         onClick={onClick}
-        onKeyDown={handleKeyDown}
-        className={`${containerClassName} cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 ${useRotator ? '' : 'hover:bg-white/6'}`}
+        className={`${containerClassName} w-full cursor-pointer appearance-none border-0 bg-transparent p-0 transition-transform duration-150 hover:-translate-y-0.5 ${useRotator ? '' : 'hover:bg-white/6'}`}
       >
         {content}
-      </div>
+      </button>
     );
   }
 

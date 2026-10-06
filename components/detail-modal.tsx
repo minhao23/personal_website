@@ -16,7 +16,6 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTravelCardSelected, setIsTravelCardSelected] = useState(false);
   const [isTravelGalleryOpen, setIsTravelGalleryOpen] = useState(false);
-  const [travelGalleryIndex, setTravelGalleryIndex] = useState(0);
   const selectionTimeoutRef = useRef<number | null>(null);
   const galleryOpenTimeoutRef = useRef<number | null>(null);
 
@@ -37,7 +36,36 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
     const activeGallery = activeEntry.gallery?.length
       ? activeEntry.gallery
       : [{ image: activeEntry.image, alt: activeEntry.imageAlt ?? `${activeEntry.title} flag` }];
-    const activeGalleryItem = activeGallery[travelGalleryIndex] ?? activeGallery[0];
+    const heroGalleryIndex = activeGallery.findIndex((galleryItem) => galleryItem.image.width >= galleryItem.image.height);
+    const heroGalleryItem = activeGallery[heroGalleryIndex >= 0 ? heroGalleryIndex : 0];
+    const supportingGalleryItems = activeGallery.filter((_, index) => index !== (heroGalleryIndex >= 0 ? heroGalleryIndex : 0));
+
+    function getTravelPhotoFrameClass(image: { width: number; height: number }, isHero = false) {
+      const isPortrait = image.height > image.width;
+
+      if (isHero) {
+        return isPortrait ? 'mx-auto max-w-[min(100%,36rem)]' : 'w-full';
+      }
+
+      return isPortrait ? 'mx-auto w-full max-w-[21rem]' : 'md:col-span-2';
+    }
+
+    function getTravelPhotoImageClass(image: { width: number; height: number }, isHero = false) {
+      const isPortrait = image.height > image.width;
+
+      if (isHero) {
+        return isPortrait ? 'mx-auto h-auto max-h-[72vh] w-auto max-w-full' : 'h-auto w-full';
+      }
+
+      return isPortrait ? 'mx-auto h-auto max-h-[34rem] w-auto max-w-full' : 'h-auto w-full';
+    }
+
+    function getTravelPhotoNumber(galleryItem: (typeof activeGallery)[number]) {
+      return activeGallery.indexOf(galleryItem) + 1;
+    }
+
+    const firstSupportingGalleryItems = supportingGalleryItems.slice(0, 2);
+    const remainingSupportingGalleryItems = supportingGalleryItems.slice(2);
 
     function triggerTravelCardSelection() {
       if (selectionTimeoutRef.current !== null) {
@@ -60,15 +88,10 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       if (galleryOpenTimeoutRef.current !== null) {
         window.clearTimeout(galleryOpenTimeoutRef.current);
       }
-      setTravelGalleryIndex(0);
       galleryOpenTimeoutRef.current = window.setTimeout(() => {
         setIsTravelGalleryOpen(true);
         galleryOpenTimeoutRef.current = null;
       }, 630);
-    }
-
-    function cycleGallery(delta: number) {
-      setTravelGalleryIndex((currentIndex) => (currentIndex + delta + activeGallery.length) % activeGallery.length);
     }
 
     return (
@@ -125,38 +148,17 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                 </div>
 
                 <div className="overflow-y-auto px-6 py-6 md:px-8 md:py-8">
-                  <div className="relative overflow-hidden rounded-[24px] bg-[#e8dfcf] shadow-[0_18px_40px_rgba(34,28,18,0.14)]">
+                  <figure className={`overflow-hidden rounded-[24px] bg-[#e8dfcf] shadow-[0_18px_40px_rgba(34,28,18,0.14)] ${getTravelPhotoFrameClass(heroGalleryItem.image, true)}`}>
                     <Image
-                      src={activeGalleryItem.image}
-                      alt={activeGalleryItem.alt ?? activeEntry.imageAlt ?? activeEntry.title}
-                      className="h-[260px] w-full object-cover md:h-[420px]"
+                      src={heroGalleryItem.image}
+                      alt={heroGalleryItem.alt ?? activeEntry.imageAlt ?? activeEntry.title}
+                      className={getTravelPhotoImageClass(heroGalleryItem.image, true)}
                     />
-
-                    {activeGallery.length > 1 ? (
-                      <>
-                        <button
-                          type="button"
-                          onClick={() => cycleGallery(-1)}
-                          aria-label="Show previous travel image"
-                          className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/42 text-[24px] text-white transition hover:bg-black/58"
-                        >
-                          &#9664;
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => cycleGallery(1)}
-                          aria-label="Show next travel image"
-                          className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black/42 text-[24px] text-white transition hover:bg-black/58"
-                        >
-                          &#9654;
-                        </button>
-                      </>
-                    ) : null}
-                  </div>
+                  </figure>
 
                   <div className="mt-4 flex items-center justify-between gap-4 text-sm text-[#6d6556]">
-                    <p>{`Photo ${travelGalleryIndex + 1} of ${activeGallery.length}`}</p>
-                    <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] uppercase">Country Carousel</p>
+                    <p>{`${activeGallery.length} ${activeGallery.length === 1 ? 'photo' : 'photos'}`}</p>
+                    <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] uppercase">Travel Highlights</p>
                   </div>
 
                   <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
@@ -172,41 +174,77 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     {`Trip to ${activeEntry.title}: add transport notes, favourite moments, food spots, and anything that made the place memorable.`}
                   </div>
 
-                  <h4 className="mt-10 font-[var(--font-display)] text-2xl text-[#1b2430]">
-                    {`${activeEntry.title} Highlights`}
-                  </h4>
+                  {firstSupportingGalleryItems.length > 0 ? (
+                    <>
+                      <h4 className="mt-10 font-[var(--font-display)] text-2xl text-[#1b2430]">
+                        {`${activeEntry.title} Highlights`}
+                      </h4>
 
-                  <div className="mt-5 grid gap-4 md:grid-cols-2">
-                    {activeGallery.slice(0, Math.min(activeGallery.length, 2)).map((galleryItem, index) => (
-                      <button
-                        key={`${activeEntry.title}-highlight-${index}`}
-                        type="button"
-                        onClick={() => setTravelGalleryIndex(index)}
-                        className="overflow-hidden rounded-[20px] bg-[#e8dfcf] text-left shadow-[0_12px_28px_rgba(35,28,18,0.12)] transition hover:-translate-y-0.5"
-                      >
-                        <Image
-                          src={galleryItem.image}
-                          alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${index + 1}`}
-                          className="h-[180px] w-full object-cover"
-                        />
-                        <div className="px-4 py-3">
-                          <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
-                            Highlight
-                          </p>
-                          <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${index + 1}.`}</p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                      <div className="mt-5 grid gap-5 md:grid-cols-2">
+                        {firstSupportingGalleryItems.map((galleryItem) => (
+                          <figure
+                            key={`${activeEntry.title}-highlight-${getTravelPhotoNumber(galleryItem)}`}
+                            className={`overflow-hidden rounded-[20px] bg-[#e8dfcf] shadow-[0_12px_28px_rgba(35,28,18,0.12)] ${getTravelPhotoFrameClass(galleryItem.image)}`}
+                          >
+                            <Image
+                              src={galleryItem.image}
+                              alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
+                              className={getTravelPhotoImageClass(galleryItem.image)}
+                            />
+                            <figcaption className="px-4 py-3">
+                              <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
+                                Highlight
+                              </p>
+                              <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${getTravelPhotoNumber(galleryItem)}.`}</p>
+                            </figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    </>
+                  ) : null}
 
-                  <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                    <p>
-                      {`The final version can be much richer: flights, itineraries, little logistics, and the kind of details that make a travel page feel useful instead of decorative.`}
-                    </p>
-                    <p>
-                      {`Once you are ready, each country can have its own real long-form write-up with custom captions and a fuller gallery sequence.`}
-                    </p>
-                  </div>
+                  {remainingSupportingGalleryItems.length > 0 ? (
+                    <>
+                      <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                        <p>
+                          {`The final version can be much richer: flights, itineraries, little logistics, and the kind of details that make a travel page feel useful instead of decorative.`}
+                        </p>
+                        <p>
+                          {`Once you are ready, each country can have its own real long-form write-up with custom captions and a fuller gallery sequence.`}
+                        </p>
+                      </div>
+
+                      <div className="mt-5 grid gap-5 md:grid-cols-2">
+                        {remainingSupportingGalleryItems.map((galleryItem) => (
+                          <figure
+                            key={`${activeEntry.title}-highlight-${getTravelPhotoNumber(galleryItem)}`}
+                            className={`overflow-hidden rounded-[20px] bg-[#e8dfcf] shadow-[0_12px_28px_rgba(35,28,18,0.12)] ${getTravelPhotoFrameClass(galleryItem.image)}`}
+                          >
+                            <Image
+                              src={galleryItem.image}
+                              alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
+                              className={getTravelPhotoImageClass(galleryItem.image)}
+                            />
+                            <figcaption className="px-4 py-3">
+                              <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
+                                Highlight
+                              </p>
+                              <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${getTravelPhotoNumber(galleryItem)}.`}</p>
+                            </figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                      <p>
+                        {`The final version can be much richer: flights, itineraries, little logistics, and the kind of details that make a travel page feel useful instead of decorative.`}
+                      </p>
+                      <p>
+                        {`Once you are ready, each country can have its own real long-form write-up with custom captions and a fuller gallery sequence.`}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
