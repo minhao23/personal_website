@@ -12,10 +12,41 @@ type DetailModalProps = {
   onClose: () => void;
 };
 
+type TravelWriteupSummary = {
+  citiesVisited: string[];
+  paragraphs: string[];
+};
+
+function splitParagraphsIntoSections(paragraphs: string[], sectionCount: number) {
+  if (sectionCount <= 0) {
+    return [];
+  }
+
+  const normalizedSectionCount = Math.min(sectionCount, Math.max(paragraphs.length, 1));
+  const baseSize = Math.floor(paragraphs.length / normalizedSectionCount);
+  const remainder = paragraphs.length % normalizedSectionCount;
+  const sections: string[][] = [];
+  let startIndex = 0;
+
+  for (let index = 0; index < normalizedSectionCount; index += 1) {
+    const extraItem = index < remainder ? 1 : 0;
+    const endIndex = startIndex + baseSize + extraItem;
+    sections.push(paragraphs.slice(startIndex, endIndex));
+    startIndex = endIndex;
+  }
+
+  while (sections.length < sectionCount) {
+    sections.push([]);
+  }
+
+  return sections;
+}
+
 export function DetailModal({ modal, onClose }: DetailModalProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTravelCardSelected, setIsTravelCardSelected] = useState(false);
   const [isTravelGalleryOpen, setIsTravelGalleryOpen] = useState(false);
+  const [travelWriteups, setTravelWriteups] = useState<Record<string, TravelWriteupSummary>>({});
   const selectionTimeoutRef = useRef<number | null>(null);
   const galleryOpenTimeoutRef = useRef<number | null>(null);
 
@@ -30,9 +61,43 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (modal.kind !== 'travel-showcase') {
+      return;
+    }
+
+    let isCancelled = false;
+
+    fetch('/api/travel-writeups')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to load travel writeups');
+        }
+
+        return response.json() as Promise<Record<string, TravelWriteupSummary>>;
+      })
+      .then((data) => {
+        if (!isCancelled) {
+          setTravelWriteups(data);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          setTravelWriteups({});
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [modal]);
+
   if (modal.kind === 'travel-showcase') {
     const entries = modal.entries;
     const activeEntry = entries[activeIndex];
+    const activeWriteup = travelWriteups[activeEntry.slug];
+    const citiesVisited = activeWriteup?.citiesVisited ?? [];
+    const writeupParagraphs = activeWriteup?.paragraphs ?? [];
     const activeGallery = activeEntry.gallery?.length
       ? activeEntry.gallery
       : [{ image: activeEntry.image, alt: activeEntry.imageAlt ?? `${activeEntry.title} flag` }];
@@ -66,6 +131,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
 
     const firstSupportingGalleryItems = supportingGalleryItems.slice(0, 2);
     const remainingSupportingGalleryItems = supportingGalleryItems.slice(2);
+    const textSectionCount = remainingSupportingGalleryItems.length > 0 ? 3 : firstSupportingGalleryItems.length > 0 ? 2 : 1;
+    const [heroTextParagraphs = [], middleTextParagraphs = [], closingTextParagraphs = []] =
+      splitParagraphsIntoSections(writeupParagraphs, textSectionCount);
 
     function triggerTravelCardSelection() {
       if (selectionTimeoutRef.current !== null) {
@@ -133,9 +201,18 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     <h3 id="travel-gallery-title" className="mt-2 font-[var(--font-display)] text-3xl text-[#1a2230] uppercase md:text-4xl">
                       {activeEntry.title}
                     </h3>
-                    <p className="mt-2 max-w-2xl text-sm leading-6 text-[#4a4a48] md:text-base">
-                      {`Trip to ${activeEntry.title}. A fuller write-up can come later, but this already reads like a proper travel page instead of a small lightbox.`}
-                    </p>
+                    {citiesVisited.length > 0 ? (
+                      <div className="mt-3 flex flex-wrap gap-2.5">
+                        {citiesVisited.map((city) => (
+                          <span
+                            key={`${activeEntry.slug}-${city}`}
+                            className="rounded-full border border-[#d9ccb3] bg-[#efe6d6] px-3 py-1.5 font-[var(--font-display)] text-[11px] tracking-[0.16em] text-[#5a4c2e] uppercase shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]"
+                          >
+                            {city}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
 
                   <button
@@ -154,6 +231,12 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                       alt={heroGalleryItem.alt ?? activeEntry.imageAlt ?? activeEntry.title}
                       className={getTravelPhotoImageClass(heroGalleryItem.image, true)}
                     />
+                    <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-5 py-4">
+                      <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
+                        Cover Photo
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`${activeEntry.title} travel highlight ${getTravelPhotoNumber(heroGalleryItem)}.`}</p>
+                    </figcaption>
                   </figure>
 
                   <div className="mt-4 flex items-center justify-between gap-4 text-sm text-[#6d6556]">
@@ -161,18 +244,13 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] uppercase">Travel Highlights</p>
                   </div>
 
-                  <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                    <p>
-                      {`This is the start of a proper ${activeEntry.title} travel entry. Instead of a small pop-up card, the layout now gives each trip room for photos, notes, and a bit more story.`}
-                    </p>
-                    <p>
-                      {`For now, the content stays intentionally simple: the carousel pulls from your local countries/carousel folder, while the copy acts as placeholder editorial text that you can replace with the real experience later.`}
-                    </p>
-                  </div>
-
-                  <div className="mt-8 rounded-[20px] bg-[#ffeab0] px-5 py-4 text-[15px] leading-7 text-[#4a3c12] md:px-6">
-                    {`Trip to ${activeEntry.title}: add transport notes, favourite moments, food spots, and anything that made the place memorable.`}
-                  </div>
+                  {heroTextParagraphs.length > 0 ? (
+                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                      {heroTextParagraphs.map((paragraph, index) => (
+                        <p key={`${activeEntry.slug}-hero-copy-${index}`}>{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : null}
 
                   {firstSupportingGalleryItems.length > 0 ? (
                     <>
@@ -191,7 +269,7 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                               alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
                               className={getTravelPhotoImageClass(galleryItem.image)}
                             />
-                            <figcaption className="px-4 py-3">
+                            <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-4 py-3">
                               <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
                                 Highlight
                               </p>
@@ -205,14 +283,13 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
 
                   {remainingSupportingGalleryItems.length > 0 ? (
                     <>
-                      <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                        <p>
-                          {`The final version can be much richer: flights, itineraries, little logistics, and the kind of details that make a travel page feel useful instead of decorative.`}
-                        </p>
-                        <p>
-                          {`Once you are ready, each country can have its own real long-form write-up with custom captions and a fuller gallery sequence.`}
-                        </p>
-                      </div>
+                      {middleTextParagraphs.length > 0 ? (
+                        <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                          {middleTextParagraphs.map((paragraph, index) => (
+                            <p key={`${activeEntry.slug}-middle-copy-${index}`}>{paragraph}</p>
+                          ))}
+                        </div>
+                      ) : null}
 
                       <div className="mt-5 grid gap-5 md:grid-cols-2">
                         {remainingSupportingGalleryItems.map((galleryItem) => (
@@ -225,7 +302,7 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                               alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
                               className={getTravelPhotoImageClass(galleryItem.image)}
                             />
-                            <figcaption className="px-4 py-3">
+                            <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-4 py-3">
                               <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
                                 Highlight
                               </p>
@@ -234,17 +311,22 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                           </figure>
                         ))}
                       </div>
+
+                      {closingTextParagraphs.length > 0 ? (
+                        <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                          {closingTextParagraphs.map((paragraph, index) => (
+                            <p key={`${activeEntry.slug}-closing-copy-${index}`}>{paragraph}</p>
+                          ))}
+                        </div>
+                      ) : null}
                     </>
-                  ) : (
+                  ) : middleTextParagraphs.length > 0 ? (
                     <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                      <p>
-                        {`The final version can be much richer: flights, itineraries, little logistics, and the kind of details that make a travel page feel useful instead of decorative.`}
-                      </p>
-                      <p>
-                        {`Once you are ready, each country can have its own real long-form write-up with custom captions and a fuller gallery sequence.`}
-                      </p>
+                      {middleTextParagraphs.map((paragraph, index) => (
+                        <p key={`${activeEntry.slug}-middle-copy-${index}`}>{paragraph}</p>
+                      ))}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>

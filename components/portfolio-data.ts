@@ -107,6 +107,7 @@ export type TabCard = {
         title: string;
         description: string;
         entries: {
+          slug: string;
           title: string;
           image: StaticImageData;
           imageAlt?: string;
@@ -120,6 +121,7 @@ export type TabCard = {
 
 const TRAVEL_COUNTRIES = [
   {
+    slug: 'japan',
     title: 'Japan',
     image: japanFlag,
     imageAlt: 'Japan flag',
@@ -130,6 +132,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'korea',
     title: 'South Korea',
     image: southKoreaFlag,
     imageAlt: 'South Korea flag',
@@ -143,6 +146,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'thailand',
     title: 'Thailand',
     image: thailandFlag,
     imageAlt: 'Thailand flag',
@@ -156,6 +160,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'philippines',
     title: 'Philippines',
     image: philippinesFlag,
     imageAlt: 'Philippines flag',
@@ -166,6 +171,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'usa',
     title: 'United States',
     image: usaFlag,
     imageAlt: 'United States flag',
@@ -180,6 +186,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'taiwan',
     title: 'Taiwan',
     image: taiwanFlag,
     imageAlt: 'Taiwan flag',
@@ -191,6 +198,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'mexico',
     title: 'Mexico',
     image: mexicoFlag,
     imageAlt: 'Mexico flag',
@@ -202,6 +210,7 @@ const TRAVEL_COUNTRIES = [
     ],
   },
   {
+    slug: 'peru',
     title: 'Peru',
     image: peruFlag,
     imageAlt: 'Peru flag',

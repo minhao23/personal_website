@@ -1,13 +1,11 @@
-#cities visited: taipei
-The first time i visited taiwan was in August 2025. I was onmy way to exchange, and planned a 5 day layover
-in Taipei before i headed off to the united states.
+## Cities Visited
 
-Considering what exchagne did for me in terms of what i had experienced, Taiwan in a way became the gateway 
-to the best period of my life. When i revisted taipei again in 2026, seeing the taipei metro station brought me kind of
-feeling that was hard to put into words. It felt as if I got transported back to when i was carrying 2 luggages,
-scared but excited for the flight to San Francisco. Taipei will always have a special place in my heart for that reason
+- Taipei
 
-Aside from that, it was definitely a very homely and familiar place. Its not that far in terms of culture from Singapore,
-so it felt welcoming, but in a familar way. 
+The first time I visited Taiwan was in August 2025. I was on my way to exchange and planned a five-day layover in Taipei before heading off to the United States.
 
-Food was awesome too, definitely always get taro paste on any dessert.
+Considering what exchange did for me and everything I experienced, Taiwan became the gateway to one of the best periods of my life. When I revisited Taipei again in 2026, seeing the Taipei metro brought back a feeling that was hard to put into words. It felt as if I had been transported back to when I was carrying two suitcases, scared but excited for the flight to San Francisco. Taipei will always have a special place in my heart for that reason.
+
+Aside from that, it was definitely a very homely and familiar place. It is not that far from Singapore culturally, so it felt welcoming in a familiar way.
+
+The food was awesome too. Definitely always get taro paste on any dessert.
