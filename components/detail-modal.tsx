@@ -42,6 +42,20 @@ function splitParagraphsIntoSections(paragraphs: string[], sectionCount: number)
   return sections;
 }
 
+function chunkItems<T>(items: T[], chunkSize: number) {
+  if (chunkSize <= 0) {
+    return [items];
+  }
+
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < items.length; index += chunkSize) {
+    chunks.push(items.slice(index, index + chunkSize));
+  }
+
+  return chunks;
+}
+
 export function DetailModal({ modal, onClose }: DetailModalProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTravelCardSelected, setIsTravelCardSelected] = useState(false);
@@ -129,11 +143,10 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       return activeGallery.indexOf(galleryItem) + 1;
     }
 
-    const firstSupportingGalleryItems = supportingGalleryItems.slice(0, 2);
-    const remainingSupportingGalleryItems = supportingGalleryItems.slice(2);
-    const textSectionCount = remainingSupportingGalleryItems.length > 0 ? 3 : firstSupportingGalleryItems.length > 0 ? 2 : 1;
-    const [heroTextParagraphs = [], middleTextParagraphs = [], closingTextParagraphs = []] =
-      splitParagraphsIntoSections(writeupParagraphs, textSectionCount);
+    const supportingGalleryGroups = chunkItems(supportingGalleryItems, 2);
+    const textSectionCount = Math.max(1, supportingGalleryGroups.length);
+    const textSections = splitParagraphsIntoSections(writeupParagraphs, textSectionCount);
+    const heroTextParagraphs = textSections[0] ?? [];
 
     function triggerTravelCardSelection() {
       if (selectionTimeoutRef.current !== null) {
@@ -252,80 +265,45 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     </div>
                   ) : null}
 
-                  {firstSupportingGalleryItems.length > 0 ? (
+                  {supportingGalleryGroups.length > 0 ? (
                     <>
                       <h4 className="mt-10 font-[var(--font-display)] text-2xl text-[#1b2430]">
                         {`${activeEntry.title} Highlights`}
                       </h4>
 
-                      <div className="mt-5 grid gap-5 md:grid-cols-2">
-                        {firstSupportingGalleryItems.map((galleryItem) => (
-                          <figure
-                            key={`${activeEntry.title}-highlight-${getTravelPhotoNumber(galleryItem)}`}
-                            className={`overflow-hidden rounded-[20px] bg-[#e8dfcf] shadow-[0_12px_28px_rgba(35,28,18,0.12)] ${getTravelPhotoFrameClass(galleryItem.image)}`}
-                          >
-                            <Image
-                              src={galleryItem.image}
-                              alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
-                              className={getTravelPhotoImageClass(galleryItem.image)}
-                            />
-                            <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-4 py-3">
-                              <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
-                                Highlight
-                              </p>
-                              <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${getTravelPhotoNumber(galleryItem)}.`}</p>
-                            </figcaption>
-                          </figure>
-                        ))}
-                      </div>
-                    </>
-                  ) : null}
+                      {supportingGalleryGroups.map((galleryGroup, groupIndex) => (
+                        <div key={`${activeEntry.slug}-group-${groupIndex}`} className={groupIndex === 0 ? 'mt-5' : 'mt-8'}>
+                          <div className="grid gap-5 md:grid-cols-2">
+                            {galleryGroup.map((galleryItem) => (
+                              <figure
+                                key={`${activeEntry.title}-highlight-${getTravelPhotoNumber(galleryItem)}`}
+                                className={`overflow-hidden rounded-[20px] bg-[#e8dfcf] shadow-[0_12px_28px_rgba(35,28,18,0.12)] ${getTravelPhotoFrameClass(galleryItem.image)}`}
+                              >
+                                <Image
+                                  src={galleryItem.image}
+                                  alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
+                                  className={getTravelPhotoImageClass(galleryItem.image)}
+                                />
+                                <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-4 py-3">
+                                  <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
+                                    Highlight
+                                  </p>
+                                  <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${getTravelPhotoNumber(galleryItem)}.`}</p>
+                                </figcaption>
+                              </figure>
+                            ))}
+                          </div>
 
-                  {remainingSupportingGalleryItems.length > 0 ? (
-                    <>
-                      {middleTextParagraphs.length > 0 ? (
-                        <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                          {middleTextParagraphs.map((paragraph, index) => (
-                            <p key={`${activeEntry.slug}-middle-copy-${index}`}>{paragraph}</p>
-                          ))}
+                          {groupIndex < supportingGalleryGroups.length - 1 && (textSections[groupIndex + 1] ?? []).length > 0 ? (
+                            <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
+                              {(textSections[groupIndex + 1] ?? []).map((paragraph, index) => (
+                                <p key={`${activeEntry.slug}-group-copy-${groupIndex + 1}-${index}`}>{paragraph}</p>
+                              ))}
+                            </div>
+                          ) : null}
                         </div>
-                      ) : null}
-
-                      <div className="mt-5 grid gap-5 md:grid-cols-2">
-                        {remainingSupportingGalleryItems.map((galleryItem) => (
-                          <figure
-                            key={`${activeEntry.title}-highlight-${getTravelPhotoNumber(galleryItem)}`}
-                            className={`overflow-hidden rounded-[20px] bg-[#e8dfcf] shadow-[0_12px_28px_rgba(35,28,18,0.12)] ${getTravelPhotoFrameClass(galleryItem.image)}`}
-                          >
-                            <Image
-                              src={galleryItem.image}
-                              alt={galleryItem.alt ?? `${activeEntry.title} travel highlight ${getTravelPhotoNumber(galleryItem)}`}
-                              className={getTravelPhotoImageClass(galleryItem.image)}
-                            />
-                            <figcaption className="border-t border-black/6 bg-[#f2e8d8] px-4 py-3">
-                              <p className="font-[var(--font-display)] text-[10px] tracking-[0.18em] text-[#8b6c1f] uppercase">
-                                Highlight
-                              </p>
-                              <p className="mt-2 text-sm leading-6 text-[#2a2e30]">{`Trip to ${activeEntry.title} photo ${getTravelPhotoNumber(galleryItem)}.`}</p>
-                            </figcaption>
-                          </figure>
-                        ))}
-                      </div>
-
-                      {closingTextParagraphs.length > 0 ? (
-                        <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                          {closingTextParagraphs.map((paragraph, index) => (
-                            <p key={`${activeEntry.slug}-closing-copy-${index}`}>{paragraph}</p>
-                          ))}
-                        </div>
-                      ) : null}
-                    </>
-                  ) : middleTextParagraphs.length > 0 ? (
-                    <div className="mt-8 space-y-5 text-[15px] leading-8 text-[#242829] md:text-base">
-                      {middleTextParagraphs.map((paragraph, index) => (
-                        <p key={`${activeEntry.slug}-middle-copy-${index}`}>{paragraph}</p>
                       ))}
-                    </div>
+                    </>
                   ) : null}
                 </div>
               </div>
