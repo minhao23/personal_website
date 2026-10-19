@@ -1,16 +1,16 @@
 'use client';
 
-import Image from 'next/image';
-import { useState, type KeyboardEvent } from 'react';
+import { useState } from 'react';
 
 import { ContactModal } from './contact-modal';
-import { ContentCard } from './content-card';
 import { DetailModal } from './detail-modal';
 import { ExperienceTimeline } from './experience-timeline';
 import { FutHeader } from './fut-header';
-import { PORTFOLIO_CONTENT, type SectionSlug } from './portfolio-data';
+import { PortfolioCardList } from './portfolio-card-list';
+import { PortfolioHero } from './portfolio-hero';
+import { PORTFOLIO_CONTENT } from './portfolio-data';
+import type { SectionSlug, TabCard } from './portfolio-types';
 import { SkillsModal } from './skills-modal';
-import { UltimateTeamOrbit } from './ultimate-team-orbit';
 
 type PortfolioScreenProps = {
   section: SectionSlug;
@@ -18,41 +18,25 @@ type PortfolioScreenProps = {
 
 export function PortfolioScreen({ section }: PortfolioScreenProps) {
   const content = PORTFOLIO_CONTENT[section];
-  const [activeModal, setActiveModal] = useState<NonNullable<(typeof content.cards)[number]['modal']> | null>(null);
-  const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const isHomeSection = section === 'home';
   const isAboutSection = section === 'about';
   const isInternshipsSection = section === 'internships';
   const isProjectsSection = section === 'projects';
-  const projectBottomCardIndex = content.cards.length - 1;
-  const hasTimeline = Boolean(content.experienceTimeline);
+  const swappedHeroContent =
+    section === 'home' ? PORTFOLIO_CONTENT.about : isAboutSection ? PORTFOLIO_CONTENT.home : content;
+  const [activeModal, setActiveModal] = useState<NonNullable<TabCard['modal']> | null>(null);
+  const [isSkillsModalOpen, setIsSkillsModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
   const sectionGridClass = isProjectsSection
     ? 'animate-in grid min-h-0 flex-1 content-start gap-4 overflow-y-auto px-1 pt-1 pb-2 md:grid-cols-2'
     : isAboutSection
       ? 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.22fr_0.78fr]'
       : isInternshipsSection
         ? 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.14fr_0.86fr]'
-      : 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]';
-  const heroCardClass = hasTimeline
-    ? `fut-tile flex min-h-0 flex-col rounded-[30px] bg-black/28 p-5 backdrop-blur-sm md:p-6 lg:p-7 ${isInternshipsSection ? 'overflow-y-auto' : 'justify-between'}`
-    : 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8';
-  const homeHeroCardClass = 'fut-tile flex min-h-0 flex-col justify-between rounded-[30px] bg-black/28 text-left backdrop-blur-sm';
-  const aboutHeroCardClass = 'fut-tile flex min-h-0 flex-col rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8';
-  const heroTitleClass = hasTimeline
-    ? 'section-heading max-w-[12ch] text-[2.7rem] text-white md:text-[3.7rem] md:leading-[0.92]'
-    : 'section-heading max-w-3xl text-[2.7rem] text-white md:text-[4.05rem] md:leading-[0.92]';
-  const aboutHeroTitleClass = 'section-heading max-w-none text-[2.35rem] text-white md:text-[3.05rem] md:leading-[0.94]';
+        : 'animate-in grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.05fr_0.95fr]';
 
-  function handleHeroKeyDown(event: KeyboardEvent<HTMLElement>) {
-    if (!isHomeSection) {
-      return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      setIsSkillsModalOpen(true);
-    }
+  function handleModalOpen(modal: NonNullable<TabCard['modal']>) {
+    setActiveModal(modal);
   }
 
   return (
@@ -65,197 +49,26 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
       <main className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 px-5 py-5 md:px-8 lg:px-10 lg:py-6">
         <section className={sectionGridClass}>
           {isProjectsSection ? (
-            content.cards.map((card, index) => {
-              const modal = card.modal;
-
-              return (
-                <div key={card.title} className={index === projectBottomCardIndex ? 'md:col-span-2' : ''}>
-                  <ContentCard
-                    {...card}
-                    onClick={modal ? () => setActiveModal(modal) : undefined}
-                  />
-                </div>
-              );
-            })
-          ) : isHomeSection ? (
-            <button
-              type="button"
-              onClick={() => setIsSkillsModalOpen(true)}
-              onKeyDown={handleHeroKeyDown}
-              className={`${homeHeroCardClass} group cursor-pointer transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6`}
-            >
-              <div className="px-6 pt-6 md:px-8 md:pt-8">
-                <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
-                  {content.eyebrow}
-                </p>
-                <h1 className={`${heroTitleClass} transition-colors duration-150 group-hover:text-[var(--color-fut-yellow)]`}>
-                  {content.title}
-                </h1>
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/74 md:text-base">
-                  {content.description}
-                </p>
-              </div>
-
-              <UltimateTeamOrbit />
-
-              {content.stats.length > 0 ? (
-                <div className="mt-2 grid gap-3 px-6 pb-6 sm:grid-cols-3 md:px-8 md:pb-8">
-                  {content.stats.map((stat) => (
-                    <div key={stat} className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-3">
-                      <p className="font-[var(--font-display)] text-xs tracking-[0.18em] text-[var(--color-fut-yellow)] uppercase">
-                        {stat}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-            </button>
+            <PortfolioCardList cards={content.cards} layout="projects" onModalOpen={handleModalOpen} />
           ) : (
-            <article className={`${isAboutSection ? aboutHeroCardClass : heroCardClass} ${isInternshipsSection ? 'lg:order-2' : ''}`}>
-              {isInternshipsSection && content.certifications?.length ? (
-                <div className="grid gap-3">
-                  {content.certifications.map((certification) => (
-                    <div
-                      key={`${certification.title}-${certification.issuer}`}
-                      className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
-                    >
-                      <p className="font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
-                        Certifications
-                      </p>
-                      <h3 className="mt-2 font-[var(--font-display)] text-[1rem] leading-[1.1] text-white">
-                        {certification.title}
-                      </h3>
-                      <p className="mt-2 text-[11px] tracking-[0.16em] text-white/55 uppercase">
-                        {certification.issuer}
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-white/74">{certification.issued}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : isAboutSection && content.heroImage ? (
-                <>
-                  <div>
-                    <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
-                      {content.eyebrow}
-                    </p>
-                    <h1 className={aboutHeroTitleClass}>{content.title}</h1>
-                  </div>
-
-                  <div className="mt-3 grid items-start gap-4 lg:mt-4 lg:grid-cols-[minmax(250px,0.95fr)_minmax(0,2.15fr)] lg:gap-4">
-                    <div className="md:sticky md:top-8">
-                      <div className="overflow-hidden rounded-[28px] border border-white/12 bg-white/6 shadow-[0_22px_42px_rgba(0,0,0,0.25)]">
-                        <Image
-                          src={content.heroImage}
-                          alt={content.heroImageAlt ?? content.title}
-                          className="aspect-[4/3] w-full object-cover lg:h-[420px] lg:aspect-auto"
-                        />
-                      </div>
-                      {content.heroImageCaption ? (
-                        <p className="mt-3 font-[var(--font-display)] text-[11px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
-                          {content.heroImageCaption}
-                        </p>
-                      ) : null}
-                    </div>
-
-                    <div className="max-w-[70ch] lg:pt-1">
-                      <div className="space-y-4 max-w-[66ch]">
-                        {(content.heroParagraphs?.length ? content.heroParagraphs : [content.description]).map((paragraph) => (
-                          <p key={paragraph} className="text-base leading-[1.65] text-white/74 md:text-[1.06rem] md:leading-[1.68]">
-                            {paragraph}
-                          </p>
-                        ))}
-                      </div>
-
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
-                    {content.eyebrow}
-                  </p>
-                  <h1 className={heroTitleClass}>{content.title}</h1>
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-white/74 md:text-base">
-                    {content.description}
-                  </p>
-                </div>
-              )}
-
-              {!isInternshipsSection && content.certifications?.length ? (
-                <div className="mt-6 grid gap-3 lg:grid-cols-3">
-                  {content.certifications.map((certification) => (
-                    <div
-                      key={`${certification.title}-${certification.issuer}`}
-                      className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
-                    >
-                      <p className="font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
-                        Certifications
-                      </p>
-                      <h3 className="mt-2 font-[var(--font-display)] text-[1rem] leading-[1.1] text-white">
-                        {certification.title}
-                      </h3>
-                      <p className="mt-2 text-[11px] tracking-[0.16em] text-white/55 uppercase">
-                        {certification.issuer}
-                      </p>
-                      <p className="mt-1 text-sm leading-6 text-white/74">{certification.issued}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : content.stats.length > 0 ? (
-                <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {content.stats.map((stat) => (
-                  <div key={stat} className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-3">
-                    <p className="font-[var(--font-display)] text-xs tracking-[0.18em] text-[var(--color-fut-yellow)] uppercase">
-                      {stat}
-                    </p>
-                  </div>
-                ))}
-                </div>
-              ) : null}
-            </article>
+            <PortfolioHero
+              section={section}
+              content={content}
+              swappedHeroContent={swappedHeroContent}
+              onOpenSkills={() => setIsSkillsModalOpen(true)}
+            />
           )}
 
           {isProjectsSection ? null : content.experienceTimeline ? (
             <div className={isInternshipsSection ? 'min-h-0 lg:order-1' : 'min-h-0'}>
               <ExperienceTimeline entries={content.experienceTimeline} />
             </div>
-          ) : isAboutSection ? (
-            <div className="flex min-h-0 flex-col gap-4">
-              {content.cards.map((card, index) => {
-                const modal = card.modal;
-                const sizeClass =
-                  card.title === 'Travels'
-                    ? 'flex-[1.2] min-h-0'
-                    : card.title === 'Off the clock'
-                      ? 'flex-[0.78] min-h-0'
-                      : index === 0
-                        ? 'flex-[0.92] min-h-0'
-                        : 'min-h-0';
-
-                return (
-                  <div key={card.title} className={sizeClass}>
-                    <ContentCard
-                      {...card}
-                      onClick={modal ? () => setActiveModal(modal) : undefined}
-                    />
-                  </div>
-                );
-              })}
-            </div>
           ) : (
-            <div className="grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
-              {content.cards.map((card) => {
-                const modal = card.modal;
-
-                return (
-                  <ContentCard
-                    key={card.title}
-                    {...card}
-                    onClick={modal ? () => setActiveModal(modal) : undefined}
-                  />
-                );
-              })}
-            </div>
+            <PortfolioCardList
+              cards={content.cards}
+              layout={isAboutSection ? 'about' : 'grid'}
+              onModalOpen={handleModalOpen}
+            />
           )}
         </section>
       </main>

@@ -22,8 +22,17 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
     stats: [],
     cards: [
       {
-        title: 'Hobbies',
-        body: 'Outside work, the main through-line is football culture, collecting strong interface references, and building small experiments that sharpen both taste and technical instincts.',
+        title: 'Travels',
+        variant: 'rotator',
+        body: 'A rotating snapshot of a few places for now, with fuller stories to come later.',
+        rotatorBadge: 'Travels',
+        rotatorEntries: [...TRAVEL_COUNTRIES],
+        modal: {
+          kind: 'travel-showcase',
+          title: 'Travels',
+          description: 'A FIFA-style country carousel for a few places so far. Use the arrows to cycle through them.',
+          entries: [...TRAVEL_COUNTRIES],
+        },
       },
       {
         title: 'Educational history',
@@ -149,22 +158,14 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
         label: 'Why',
         labelHover: 'View highlights',
         title: 'My favourite game',
-        body: 'If this page looks familiar to you (hopefully it does), it is because it was designed after ' + 
-        'my favorite game, FIFA 17. It\'s a game I\'ve spent  countless hours on, ' +
-        'and what better way to bring my website to life, than through an interface that defined much of my childhood.',
+        body:
+          'If this page looks familiar to you (hopefully it does), it is because it was designed after ' +
+          "my favorite game, FIFA 17. It's a game I've spent countless hours on, " +
+          'and what better way to bring my website to life, than through an interface that defined much of my childhood.',
       },
       {
-        title: 'Travels',
-        variant: 'rotator',
-        body: 'A rotating snapshot of a few places for now, with fuller stories to come later.',
-        rotatorBadge: 'Travels',
-        rotatorEntries: [...TRAVEL_COUNTRIES],
-        modal: {
-          kind: 'travel-showcase',
-          title: 'Travels',
-          description: 'A FIFA-style country carousel for a few places so far. Use the arrows to cycle through them.',
-          entries: [...TRAVEL_COUNTRIES],
-        },
+        title: 'Hobbies',
+        body: 'Outside work, the main through-line is football culture, collecting strong interface references, and building small experiments that sharpen both taste and technical instincts.',
       },
       {
         label: 'Outside work',
