@@ -50,8 +50,8 @@ type ContactPageContentProps = {
 
 export function ContactPageContent({ content }: ContactPageContentProps) {
   return (
-    <section className="animate-in flex min-h-0 flex-1 flex-col">
-      <div className="mb-5">
+    <section className="contact-content animate-in flex min-h-0 flex-1 flex-col">
+      <div className="contact-intro mb-5">
         <p className="font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
           {content.eyebrow}
         </p>
@@ -63,7 +63,7 @@ export function ContactPageContent({ content }: ContactPageContentProps) {
         </p>
       </div>
 
-      <div className="grid min-h-0 flex-1 gap-4 md:grid-cols-3">
+      <div className="contact-channels grid min-h-0 flex-1 gap-4 md:grid-cols-3">
         {CONTACT_CHANNELS.map((channel) => {
           const Icon = channel.icon
           const isEmail = channel.href.startsWith("mailto:")
@@ -74,9 +74,9 @@ export function ContactPageContent({ content }: ContactPageContentProps) {
               href={channel.href}
               target={isEmail ? undefined : "_blank"}
               rel={isEmail ? undefined : "noreferrer"}
-              className="group fut-tile relative flex min-h-[220px] overflow-hidden rounded-[30px] bg-black/28 p-6 text-left transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6"
+              className="contact-channel group fut-tile relative flex min-h-[220px] overflow-hidden rounded-[30px] bg-black/28 p-6 text-left transition-transform duration-150 hover:-translate-y-0.5 hover:bg-white/6"
             >
-              <div className="pointer-events-none absolute right-[-36px] bottom-[-30px] z-0 h-[210px] w-[210px]">
+              <div className="contact-channel-art pointer-events-none absolute right-[-36px] bottom-[-30px] z-0 h-[210px] w-[210px]">
                 <div
                   className={`absolute inset-0 rounded-full blur-2xl ${channel.glowClass}`}
                 />
@@ -85,7 +85,7 @@ export function ContactPageContent({ content }: ContactPageContentProps) {
                 />
               </div>
 
-              <div className="relative z-10 max-w-[70%]">
+              <div className="contact-channel-text relative z-10 max-w-[70%]">
                 <p className="font-[var(--font-display)] text-[11px] tracking-[0.22em] text-[var(--color-fut-yellow)] uppercase">
                   Channel
                 </p>

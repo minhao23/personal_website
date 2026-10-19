@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { MobileProfileCopy } from './mobile-profile-copy';
 import type { SectionContent } from './portfolio-types';
 
 type AboutProfilePanelProps = {
@@ -48,7 +49,7 @@ export function AboutProfilePanel({ content }: AboutProfilePanelProps) {
   }
 
   return (
-    <article className="fut-tile flex min-h-0 flex-col overflow-hidden rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8">
+    <article className="home-profile-panel fut-tile flex min-h-0 flex-col overflow-hidden rounded-[30px] bg-black/28 p-6 backdrop-blur-sm md:p-8">
       <div className="shrink-0 border-b border-white/8 pb-4">
         <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">
           {content.eyebrow}
@@ -79,7 +80,9 @@ export function AboutProfilePanel({ content }: AboutProfilePanelProps) {
             ) : null}
           </div>
 
-          <div className="max-w-[62ch] space-y-5 xl:pt-1">
+          <MobileProfileCopy />
+
+          <div className="hidden max-w-[62ch] space-y-5 md:block xl:pt-1">
             {(content.heroParagraphs?.length ? content.heroParagraphs : [content.description]).map(
               (paragraph, index) => (
                 <p
@@ -100,7 +103,7 @@ export function AboutProfilePanel({ content }: AboutProfilePanelProps) {
 
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute right-6 bottom-5 z-20 flex items-center gap-3 rounded-full border border-[var(--color-fut-yellow)]/22 bg-[#10151d]/92 px-4 py-2 shadow-[0_10px_28px_rgba(0,0,0,0.35)] backdrop-blur-md transition-opacity duration-300 ${
+        className={`pointer-events-none absolute right-6 bottom-5 z-20 hidden items-center gap-3 rounded-full border border-[var(--color-fut-yellow)]/22 bg-[#10151d]/92 px-4 py-2 shadow-[0_10px_28px_rgba(0,0,0,0.35)] backdrop-blur-md transition-opacity duration-300 md:flex ${
           showScrollCue ? 'opacity-100' : 'opacity-0'
         }`}
       >

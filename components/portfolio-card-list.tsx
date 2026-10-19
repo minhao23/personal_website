@@ -22,7 +22,7 @@ export function PortfolioCardList({ cards, layout, onModalOpen }: PortfolioCardL
     return (
       <>
         {cards.map((card, index) => (
-          <div key={card.title} className={index === bottomCardIndex ? 'md:col-span-2' : ''}>
+          <div key={card.title} className={`project-card${index === bottomCardIndex ? ' md:col-span-2' : ''}`}>
             {renderCard(card, onModalOpen, card.title)}
           </div>
         ))}
@@ -54,7 +54,7 @@ export function PortfolioCardList({ cards, layout, onModalOpen }: PortfolioCardL
   }
 
   return (
-    <div className="grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
+    <div className="portfolio-card-grid grid min-h-0 gap-4 md:grid-cols-3 lg:grid-cols-1">
       {cards.map((card) => (
         renderCard(card, onModalOpen, card.title)
       ))}

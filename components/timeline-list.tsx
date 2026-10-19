@@ -26,16 +26,16 @@ export function TimelineList({ events, scrollable = false, cardClassName = '' }:
     <>
       <div className="timeline-rail pointer-events-none absolute bottom-2 left-4 top-2 w-px bg-[linear-gradient(180deg,rgba(245,208,0,0.95),rgba(245,208,0,0.12))]" />
 
-      <div className="grid gap-4 pb-1 pl-10">
+      <div className="timeline-grid grid gap-4 pb-1 pl-10">
         {events.map((event) => (
           <article
             key={`${event.name}-${event.dates}`}
             className={`timeline-event relative rounded-[24px] border border-white/10 bg-[#0d1219]/88 p-5 shadow-[0_12px_30px_rgba(0,0,0,0.18)] ${cardClassName}`.trim()}
           >
-            <div className="absolute left-[-31px] top-6 h-4 w-4 rounded-full border-[3px] border-[#111823] bg-[var(--color-fut-yellow)] shadow-[0_0_0_3px_rgba(245,208,0,0.12)]" />
+            <div className="timeline-dot absolute left-[-31px] top-6 h-4 w-4 rounded-full border-[3px] border-[#111823] bg-[var(--color-fut-yellow)] shadow-[0_0_0_3px_rgba(245,208,0,0.12)]" />
 
             <div>
-              <div className="flex items-start justify-between gap-4">
+              <div className="timeline-event-header flex items-start justify-between gap-4">
                 <div>
                   <p className="font-[var(--font-display)] text-sm tracking-[0.18em] text-[var(--color-fut-yellow)] uppercase">
                     {event.dates}
@@ -61,7 +61,7 @@ export function TimelineList({ events, scrollable = false, cardClassName = '' }:
               </div>
 
               {event.tags?.length ? (
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="timeline-tags mt-4 flex flex-wrap gap-2">
                   {event.tags.map((item) => (
                     <span
                       key={item}
@@ -73,7 +73,7 @@ export function TimelineList({ events, scrollable = false, cardClassName = '' }:
                 </div>
               ) : null}
 
-              <div className="mt-4 grid gap-2">
+              <div className="timeline-description mt-4 grid gap-2">
                 {event.description.map((line) => (
                   <p key={line} className="text-sm leading-6 text-white/74">
                     {line}
@@ -88,7 +88,7 @@ export function TimelineList({ events, scrollable = false, cardClassName = '' }:
   );
 
   if (scrollable) {
-    return <div className="relative h-full min-h-0 overflow-y-auto pr-3">{content}</div>;
+    return <div className="timeline-scroll relative h-full min-h-0 overflow-y-auto pr-3">{content}</div>;
   }
 
   return <div className="relative">{content}</div>;

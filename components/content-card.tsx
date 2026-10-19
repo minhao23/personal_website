@@ -211,7 +211,7 @@ export function ContentCard({
               <p className="mb-2 font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
                 Tech stack
               </p>
-              <div className="grid grid-cols-4 gap-2">
+              <div className="tech-stack-pills grid grid-cols-4 gap-2">
                 {stack.map((stackItem) => (
                   <div key={stackItem} className="rounded-[12px] border border-white/10 bg-black/22 px-2 py-1.5 text-center">
                     <p className="font-[var(--font-display)] text-[9px] tracking-[0.12em] text-[var(--color-fut-yellow)] uppercase">

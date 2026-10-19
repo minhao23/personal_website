@@ -3,11 +3,15 @@ import type { Certification } from './portfolio-types';
 type CertificationListProps = {
   certifications: Certification[];
   className?: string;
+  compactOnMobile?: boolean;
 };
 
-export function CertificationList({ certifications, className }: CertificationListProps) {
+export function CertificationList({ certifications, className, compactOnMobile = false }: CertificationListProps) {
   return (
-    <div className={className}>
+    <div className={`${className ?? ''}${compactOnMobile ? ' mobile-compact-certifications' : ''}`}>
+      {compactOnMobile ? (
+        <h2 className="mobile-certification-heading hidden">Certifications</h2>
+      ) : null}
       {certifications.map((certification) => (
         <div
           key={`${certification.title}-${certification.issuer}`}
@@ -21,6 +25,11 @@ export function CertificationList({ certifications, className }: CertificationLi
           </h3>
           <p className="mt-2 text-[11px] tracking-[0.16em] text-white/55 uppercase">{certification.issuer}</p>
           <p className="mt-1 text-sm leading-6 text-white/74">{certification.issued}</p>
+          {compactOnMobile ? (
+            <p className="mobile-certification-meta hidden">
+              {certification.issuer} &middot; {certification.issued.replace(/^Issued\s+/, '')}
+            </p>
+          ) : null}
         </div>
       ))}
     </div>

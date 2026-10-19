@@ -31,7 +31,7 @@ export function PortfolioHero({ section, content, swappedHeroContent, onOpenSkil
   return (
     <article className={`${containerClass} ${isInternshipsSection ? 'lg:order-2' : ''}`}>
       {isInternshipsSection && content.certifications?.length ? (
-        <CertificationList certifications={content.certifications} className="grid gap-3" />
+        <CertificationList certifications={content.certifications} className="grid gap-3" compactOnMobile />
       ) : (
         <div>
           <p className="mb-3 font-[var(--font-display)] text-xs tracking-[0.3em] text-[var(--color-fut-yellow)] uppercase">

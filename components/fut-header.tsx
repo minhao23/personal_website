@@ -1,18 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 
 import singaporeFlag from "../app/assets/countries/singapore.png"
-import { NAV_ITEMS, type SectionSlug } from "./portfolio-data"
+import { DesktopNav } from "./desktop-nav"
+import type { SectionSlug } from "./portfolio-types"
 
 type FutHeaderProps = {
   activeSlug: SectionSlug
 }
 
 export function FutHeader({ activeSlug }: FutHeaderProps) {
-  const getNavLabel = (slug: string) => slug.toUpperCase()
-
   return (
     <header className="relative z-10 mx-auto w-full max-w-7xl px-5 pt-5 md:px-8 lg:px-10 lg:pt-6">
       <div className="overflow-hidden rounded-[18px] border border-[#1e2837] bg-[#0d1118]/70 shadow-[0_18px_40px_rgba(0,0,0,0.35)] backdrop-blur-md">
@@ -69,31 +67,7 @@ export function FutHeader({ activeSlug }: FutHeaderProps) {
           </div>
         </div>
 
-        <nav
-          className="grid h-[48px] items-stretch bg-[#10151d]"
-          style={{
-            gridTemplateColumns: NAV_ITEMS.map((item) => item.width).join(" "),
-          }}
-        >
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeSlug === item.slug
-
-            return (
-              <Link
-                key={item.slug}
-                href={`/${item.slug}`}
-                aria-current={isActive ? "page" : undefined}
-                className={`nav-tab relative border-r border-[#394558] px-3 ${
-                  isActive ? "active" : "bg-[#10151d]"
-                }`}
-              >
-                <span className="relative top-[1px]">
-                  {getNavLabel(item.slug)}
-                </span>
-              </Link>
-            )
-          })}
-        </nav>
+        <DesktopNav activeSlug={activeSlug} className="hidden md:grid" />
       </div>
     </header>
   )

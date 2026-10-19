@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 import Image from 'next/image';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 import stadiumBackground from './assets/backgroud/background.jpeg';
 import './globals.css';
@@ -9,6 +9,12 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Minhao\'s personal website',
   description: 'FIFA-inspired personal portfolio built with Next.js.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({

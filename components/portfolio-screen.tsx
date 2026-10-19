@@ -6,6 +6,7 @@ import { ContactPageContent } from "./contact-page-content"
 import { DetailModal } from "./detail-modal"
 import { ExperienceTimeline } from "./experience-timeline"
 import { FutHeader } from "./fut-header"
+import { MobileNav } from "./mobile-nav"
 import { PortfolioCardList } from "./portfolio-card-list"
 import { PortfolioHero } from "./portfolio-hero"
 import { PORTFOLIO_CONTENT } from "./portfolio-data"
@@ -45,18 +46,18 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-transparent text-white">
+    <div className={`portfolio-screen flex h-screen flex-col overflow-hidden bg-transparent text-white${isContactSection ? " contact-screen" : ""}`}>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,10,0.12)_0%,rgba(7,8,10,0.5)_38%,rgba(7,8,10,0.9)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_center,rgba(245,208,0,0.1),transparent_34%)]" />
 
       <FutHeader activeSlug={section} />
 
-      <main className="relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 px-5 py-5 md:px-8 lg:px-10 lg:py-6">
+      <main className="portfolio-main relative z-10 mx-auto flex min-h-0 w-full max-w-7xl flex-1 px-5 py-5 md:px-8 lg:px-10 lg:py-6">
         {isContactSection ? (
           <ContactPageContent content={content} />
         ) : (
           <section
-            className={`${sectionGridClass}${
+            className={`portfolio-section ${sectionGridClass}${
               isInternshipsSection ? " internships-page" : ""
             }`}
           >
@@ -93,6 +94,8 @@ export function PortfolioScreen({ section }: PortfolioScreenProps) {
           </section>
         )}
       </main>
+
+      <MobileNav activeSlug={section} className="md:hidden" />
 
       {activeModal ? (
         <DetailModal modal={activeModal} onClose={() => setActiveModal(null)} />

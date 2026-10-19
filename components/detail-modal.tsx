@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState, type WheelEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent, type WheelEvent } from 'react';
 import { FaFlag, FaStar } from 'react-icons/fa6';
 
 import type { TabCard } from './portfolio-data';
@@ -73,6 +73,10 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
   const galleryOpenTimeoutRef = useRef<number | null>(null);
   const wheelAccumulatorRef = useRef(0);
   const wheelResetTimeoutRef = useRef<number | null>(null);
+  const dragOffsetRef = useRef(0);
+  const dragRef = useRef<{ x: number; y: number; lastX: number; time: number; velocity: number; moved: boolean } | null>(null);
+  const momentumFrameRef = useRef<number | null>(null);
+  const suppressTravelClickRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -84,6 +88,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       }
       if (wheelResetTimeoutRef.current !== null) {
         window.clearTimeout(wheelResetTimeoutRef.current);
+      }
+      if (momentumFrameRef.current !== null) {
+        window.cancelAnimationFrame(momentumFrameRef.current);
       }
     };
   }, []);
@@ -196,6 +203,11 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       }, 140);
 
       const deltaMultiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? 40 : 1;
+      const isMobile = window.matchMedia('(width < 768px)').matches;
+      if (isMobile) {
+        moveTravelCard(-event.deltaX * deltaMultiplier);
+        return;
+      }
       wheelAccumulatorRef.current += event.deltaY * deltaMultiplier;
 
       const switchThreshold = 40;
@@ -207,7 +219,86 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       }
     }
 
+    function moveTravelCard(distance: number) {
+      const cardStep = 180;
+      let offset = dragOffsetRef.current + distance;
+      // Consume distance continuously so a single drag can loop through multiple countries.
+      while (Math.abs(offset) >= cardStep) {
+        const direction = offset < 0 ? 1 : -1;
+        cycleEntry(direction);
+        offset += direction * cardStep;
+      }
+      dragOffsetRef.current = offset;
+    }
+
+    function handleTravelPointerDown(event: PointerEvent<HTMLDivElement>) {
+      if (isTravelGalleryOpen || !window.matchMedia('(width < 768px)').matches || event.pointerType === 'mouse') {
+        return;
+      }
+      if (momentumFrameRef.current !== null) {
+        window.cancelAnimationFrame(momentumFrameRef.current);
+        momentumFrameRef.current = null;
+      }
+      suppressTravelClickRef.current = false;
+      dragRef.current = {
+        x: event.clientX, y: event.clientY, lastX: event.clientX,
+        time: performance.now(), velocity: 0, moved: false,
+      };
+    }
+
+    function handleTravelPointerMove(event: PointerEvent<HTMLDivElement>) {
+      const drag = dragRef.current;
+      if (!drag) {
+        return;
+      }
+      if (!drag.moved && Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 8) {
+        drag.moved = true;
+        suppressTravelClickRef.current = true;
+        event.currentTarget.setPointerCapture(event.pointerId);
+      }
+      const now = performance.now();
+      const distance = event.clientX - drag.lastX;
+      drag.velocity = distance / Math.max(now - drag.time, 1);
+      drag.lastX = event.clientX;
+      drag.time = now;
+      if (drag.moved && Math.abs(event.clientX - drag.x) > Math.abs(event.clientY - drag.y)) {
+        moveTravelCard(distance);
+      } else {
+        drag.velocity = 0;
+      }
+    }
+
+    function handleTravelPointerEnd(event: PointerEvent<HTMLDivElement>) {
+      const drag = dragRef.current;
+      dragRef.current = null;
+      if (!drag?.moved) {
+        return;
+      }
+      let velocity = event.type === 'pointercancel' || performance.now() - drag.time > 100
+        ? 0 : Math.max(-2, Math.min(2, drag.velocity));
+      let lastTime = performance.now();
+      function animateMomentum(now: number) {
+        const elapsed = Math.min(now - lastTime, 32);
+        lastTime = now;
+        if (Math.abs(velocity) > 0.02) {
+          moveTravelCard(velocity * elapsed);
+          velocity *= Math.exp(-elapsed / 180);
+        } else {
+          dragOffsetRef.current = 0;
+          momentumFrameRef.current = null;
+          return;
+        }
+        momentumFrameRef.current = window.requestAnimationFrame(animateMomentum);
+      }
+      momentumFrameRef.current = window.requestAnimationFrame(animateMomentum);
+    }
+
     function openTravelGallery() {
+      if (momentumFrameRef.current !== null) {
+        window.cancelAnimationFrame(momentumFrameRef.current);
+        momentumFrameRef.current = null;
+      }
+      dragOffsetRef.current = 0;
       triggerTravelCardSelection();
       if (galleryOpenTimeoutRef.current !== null) {
         window.clearTimeout(galleryOpenTimeoutRef.current);
@@ -220,8 +311,19 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
 
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/72 px-4 py-8 backdrop-blur-sm"
+        className={`fixed inset-0 z-50 flex items-center justify-center bg-black/72 px-4 py-8 backdrop-blur-sm ${isTravelGalleryOpen ? '' : 'max-md:touch-none max-md:overflow-hidden max-md:overscroll-none'}`}
         onWheel={handleTravelWheel}
+        onPointerDown={handleTravelPointerDown}
+        onPointerMove={handleTravelPointerMove}
+        onPointerUp={handleTravelPointerEnd}
+        onPointerCancel={handleTravelPointerEnd}
+        onClickCapture={(event) => {
+          if (suppressTravelClickRef.current && !isTravelGalleryOpen) {
+            event.preventDefault();
+            event.stopPropagation();
+            suppressTravelClickRef.current = false;
+          }
+        }}
       >
         <button
           type="button"
