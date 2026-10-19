@@ -17,4 +17,12 @@ As you can probably tell from the number of cities visited, I have a lot of memo
 
 North Carolina was beautiful. The weather was exceptional, and the people were too. That early fall period in 2025 was insane: long hours of sunlight, with daytime temperatures around 25 degrees Celsius and night temperatures around 15 degrees Celsius. Unlike Singapore, where thunderstorms would drench you, the rain in North Carolina was much more tolerable.
 
-Aside from that, I'll try not to bore you with every city I visited.
+Aside from that, I'll try not to bore you with every city I visited, but some of the highlights are:
+- Messi (2 Goals 1 Assist)
+- Grand Canyon
+- F1 in Vegas
+- Panda Express
+- Six Flags Over Georgia
+- Universal Studios Epic World
+
+

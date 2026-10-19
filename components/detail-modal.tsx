@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type WheelEvent } from 'react';
 import { FaFlag, FaStar } from 'react-icons/fa6';
 
 import type { TabCard } from './portfolio-data';
@@ -56,6 +56,14 @@ function chunkItems<T>(items: T[], chunkSize: number) {
   return chunks;
 }
 
+function getTravelDateParts(date: Date) {
+  return {
+    day: String(date.getDate()).padStart(2, '0'),
+    month: String(date.getMonth() + 1).padStart(2, '0'),
+    year: String(date.getFullYear()).slice(-2),
+  };
+}
+
 export function DetailModal({ modal, onClose }: DetailModalProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTravelCardSelected, setIsTravelCardSelected] = useState(false);
@@ -63,6 +71,8 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
   const [travelWriteups, setTravelWriteups] = useState<Record<string, TravelWriteupSummary>>({});
   const selectionTimeoutRef = useRef<number | null>(null);
   const galleryOpenTimeoutRef = useRef<number | null>(null);
+  const wheelAccumulatorRef = useRef(0);
+  const wheelResetTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     return () => {
@@ -71,6 +81,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       }
       if (galleryOpenTimeoutRef.current !== null) {
         window.clearTimeout(galleryOpenTimeoutRef.current);
+      }
+      if (wheelResetTimeoutRef.current !== null) {
+        window.clearTimeout(wheelResetTimeoutRef.current);
       }
     };
   }, []);
@@ -109,6 +122,7 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
   if (modal.kind === 'travel-showcase') {
     const entries = modal.entries;
     const activeEntry = entries[activeIndex];
+    const activeDate = getTravelDateParts(activeEntry.date);
     const activeWriteup = travelWriteups[activeEntry.slug];
     const citiesVisited = activeWriteup?.citiesVisited ?? [];
     const writeupParagraphs = activeWriteup?.paragraphs ?? [];
@@ -164,6 +178,35 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
       setActiveIndex((currentIndex) => (currentIndex + delta + entries.length) % entries.length);
     }
 
+    function handleTravelWheel(event: WheelEvent<HTMLElement>) {
+      if (isTravelGalleryOpen) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (wheelResetTimeoutRef.current !== null) {
+        window.clearTimeout(wheelResetTimeoutRef.current);
+      }
+
+      wheelResetTimeoutRef.current = window.setTimeout(() => {
+        wheelAccumulatorRef.current = 0;
+        wheelResetTimeoutRef.current = null;
+      }, 140);
+
+      const deltaMultiplier = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? 40 : 1;
+      wheelAccumulatorRef.current += event.deltaY * deltaMultiplier;
+
+      const switchThreshold = 40;
+
+      while (Math.abs(wheelAccumulatorRef.current) >= switchThreshold) {
+        const direction = wheelAccumulatorRef.current > 0 ? 1 : -1;
+        cycleEntry(direction);
+        wheelAccumulatorRef.current -= direction * switchThreshold;
+      }
+    }
+
     function openTravelGallery() {
       triggerTravelCardSelection();
       if (galleryOpenTimeoutRef.current !== null) {
@@ -176,7 +219,10 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
     }
 
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/72 px-4 py-8 backdrop-blur-sm">
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/72 px-4 py-8 backdrop-blur-sm"
+        onWheel={handleTravelWheel}
+      >
         <button
           type="button"
           aria-label="Close modal"
@@ -403,7 +449,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     >
                       DD
                     </p>
-                    <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">01</p>
+                      <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">
+                        {activeDate.day}
+                      </p>
                   </div>
                   <div>
                     <p
@@ -413,7 +461,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     >
                       MM
                     </p>
-                    <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">01</p>
+                      <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">
+                        {activeDate.month}
+                      </p>
                   </div>
                   <div>
                     <p
@@ -423,7 +473,9 @@ export function DetailModal({ modal, onClose }: DetailModalProps) {
                     >
                       YY
                     </p>
-                    <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">01</p>
+                      <p className="font-[var(--font-display)] text-[2.45rem] leading-none md:text-[2.7rem]">
+                        {activeDate.year}
+                      </p>
                   </div>
                 </div>
               </div>

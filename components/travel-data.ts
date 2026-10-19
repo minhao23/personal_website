@@ -50,6 +50,7 @@ import type { TravelCountryEntry } from './portfolio-types';
 export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   {
     slug: 'japan',
+    date: new Date('2022-12-11'),
     title: 'Japan',
     image: japanFlag,
     imageAlt: 'Japan flag',
@@ -61,6 +62,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'korea',
+    date: new Date('2025-12-16'),
     title: 'South Korea',
     image: southKoreaFlag,
     imageAlt: 'South Korea flag',
@@ -75,6 +77,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'thailand',
+    date: new Date('2024-05-03'),
     title: 'Thailand',
     image: thailandFlag,
     imageAlt: 'Thailand flag',
@@ -89,6 +92,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'philippines',
+    date: new Date('2025-05-04'),
     title: 'Philippines',
     image: philippinesFlag,
     imageAlt: 'Philippines flag',
@@ -100,6 +104,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'usa',
+    date: new Date('2025-08-16'),
     title: 'United States',
     image: usaFlag,
     imageAlt: 'United States flag',
@@ -115,6 +120,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'taiwan',
+    date: new Date('2026-07-30'),
     title: 'Taiwan',
     image: taiwanFlag,
     imageAlt: 'Taiwan flag',
@@ -128,6 +134,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   {
     slug: 'mexico',
     title: 'Mexico',
+    date: new Date('2025-11-11'),
     image: mexicoFlag,
     imageAlt: 'Mexico flag',
     gallery: [
@@ -139,6 +146,7 @@ export const TRAVEL_COUNTRIES: TravelCountryEntry[] = [
   },
   {
     slug: 'peru',
+    date: new Date('2025-09-13'),
     title: 'Peru',
     image: peruFlag,
     imageAlt: 'Peru flag',

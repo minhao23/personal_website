@@ -40,6 +40,7 @@ export type TravelCountryEntry = {
   slug: string;
   title: string;
   image: StaticImageData;
+  date: Date;
   imageAlt?: string;
   gallery?: readonly TravelGalleryItem[];
 };

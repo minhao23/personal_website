@@ -158,7 +158,7 @@ function SkillCard({ player }: { player: SkillPlayer }) {
         <div className="relative flex h-[52px] items-start justify-center pt-2 md:h-[58px] md:pt-2.5">
           <Icon className="h-7 w-7 text-[#1c1408] md:h-8 md:w-8" />
         </div>
-        <p className="relative mt-0.5 px-1 text-center font-[var(--font-fut-card)] text-[0.54rem] leading-[1.02] font-black tracking-[0.03em] text-[#1a1208] uppercase [text-shadow:0_1px_0_rgba(255,255,255,0.2),0_0_0.4px_rgba(26,18,8,0.95)] md:text-[0.6rem]">
+        <p className="relative mt-0.5 px-1 text-center font-[var(--font-fut-card)] text-[0.54rem] leading-[1.02] font-extrabold tracking-[0.03em] text-[#1a1208] uppercase [text-shadow:0_1px_0_rgba(255,255,255,0.2),0_0_0.4px_rgba(26,18,8,0.95)] md:text-[0.6rem]">
           {player.name}
         </p>
       </div>

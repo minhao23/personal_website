@@ -155,9 +155,10 @@ export const PORTFOLIO_CONTENT: Record<SectionSlug, SectionContent> = {
       "I am Minhao, a computer science and business student at NUS who likes building things that feel sharp, useful, and well considered.",
     stats: [],
     heroParagraphs: [
-      "What draws me most to software is the mix of systems thinking and taste. I enjoy the challenge of turning something complex into an experience that feels obvious, calm, and intentional once it is in front of the user.",
-      "So far, that has taken me from software engineering work at GovTech to data engineering work in ByteDance network implementation, where I have worked on problems that sit closer to real users, real operations, and real constraints than classroom projects usually do.",
-      "Outside of school and internships, I spend most of my time on the tennis court, the football pitch, or in Muay Thai training. I also like collecting references and turning them into interfaces, which is probably why this site ended up looking like a FIFA screen in the first place.",
+      "What draws me to software is the balance between systems thinking and design. I enjoy taking something complex and shaping it into an experience that feels clear, calm, and intentional.",
+      "That interest has taken me from software engineering at GovTech to network operations engineering at ByteDance. Across both roles, I have worked on systems shaped by real users, operational constraints, and the practical trade-offs that classroom projects rarely capture.",
+      "My own projects give me room to explore beyond those roles. I really enjoy experiental learning, so many of my own projects are built around cementing what I have picked up through my coursework. My Passport photo pipeline for example, waas done after a computer vision module. I do enjoy pieceing together projects from scratch, and using them to solve real problem, so feel free to contact me if you have ideas you want to bring to life",
+      "Outside school and work, you will usually find me on the tennis court, playing football, or training Muay Thai. I also enjoy collecting interface references and turning them into small experiments. That is probably why this site ended up looking like a FIFA menu in the first place.",
     ],
     heroImage: profilePic,
     heroImageAlt: "Profile photo of He Minhao",

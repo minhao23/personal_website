@@ -18,8 +18,6 @@ const CONTACT_CHANNELS: ContactChannel[] = [
   {
     title: "LinkedIn",
     value: "minhaohe",
-    description:
-      "For professional updates, experience, and a quick way to connect.",
     href: "https://www.linkedin.com/in/minhaohe/",
     icon: FaLinkedin,
     glowClass:
@@ -29,8 +27,6 @@ const CONTACT_CHANNELS: ContactChannel[] = [
   {
     title: "Email",
     value: "heminhao120@gmail.com",
-    description:
-      "Best for direct outreach, project conversations, or anything more personal.",
     href: "mailto:heminhao120@gmail.com",
     icon: MdEmail,
     glowClass:
@@ -40,8 +36,6 @@ const CONTACT_CHANNELS: ContactChannel[] = [
   {
     title: "GitHub",
     value: "minhao23",
-    description:
-      "Code, experiments, course projects, and the things I am actively building.",
     href: "https://github.com/minhao23",
     icon: FaGithub,
     glowClass:
