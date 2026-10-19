@@ -7,7 +7,7 @@ import type { SectionContent } from "./portfolio-types"
 type ContactChannel = {
   title: string
   value: string
-  description: string
+  description?: string
   href: string
   icon: IconType
   glowClass: string
