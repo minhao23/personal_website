@@ -261,31 +261,6 @@ body {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
-.fut-contact-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100%;
-  padding: 0.8rem 1.35rem;
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  line-height: 1;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: #111316;
-  background: var(--color-fut-yellow);
-  clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
-  transition: filter 0.15s ease, transform 0.15s ease;
-}
-
-.fut-contact-button:hover {
-  filter: brightness(1.03);
-}
-
-.fut-contact-button--active {
-  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15);
-}
-
 .diagonal-accent {
   clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
 }
@@ -306,4 +281,69 @@ body {
 
 .animate-in {
   animation: slide-in 0.4s ease forwards;
+}
+
+@keyframes internship-card-enter {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes internship-line-enter {
+  from {
+    scale: 1 0;
+  }
+
+  to {
+    scale: 1 1;
+  }
+}
+
+.internships-page .timeline-event,
+.internships-page .certification-card {
+  animation: internship-card-enter 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 80ms;
+  transition: border-color 220ms ease, box-shadow 220ms ease, background-color 220ms ease;
+}
+
+.internships-page .timeline-event:nth-child(2),
+.internships-page .certification-card:nth-child(2) {
+  animation-delay: 170ms;
+}
+
+.internships-page .timeline-event:nth-child(3),
+.internships-page .certification-card:nth-child(3) {
+  animation-delay: 260ms;
+}
+
+.internships-page .timeline-event:hover,
+.internships-page .certification-card:hover {
+  border-color: rgba(245, 208, 0, 0.45);
+  background-color: rgba(18, 24, 33, 0.94);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18), 0 0 24px rgba(245, 208, 0, 0.06);
+}
+
+.internships-page .timeline-rail {
+  transform-origin: top;
+  animation: internship-line-enter 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .internships-page,
+  .internships-page *,
+  .internships-page *::before,
+  .internships-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .internships-page .fut-tile:hover {
+    transform: none;
+  }
 }

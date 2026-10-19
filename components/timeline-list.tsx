@@ -24,13 +24,13 @@ type TimelineListProps = {
 export function TimelineList({ events, scrollable = false, cardClassName = '' }: TimelineListProps) {
   const content = (
     <>
-      <div className="pointer-events-none absolute bottom-2 left-4 top-2 w-px bg-[linear-gradient(180deg,rgba(245,208,0,0.95),rgba(245,208,0,0.12))]" />
+      <div className="timeline-rail pointer-events-none absolute bottom-2 left-4 top-2 w-px bg-[linear-gradient(180deg,rgba(245,208,0,0.95),rgba(245,208,0,0.12))]" />
 
       <div className="grid gap-4 pb-1 pl-10">
         {events.map((event) => (
           <article
             key={`${event.name}-${event.dates}`}
-            className={`relative rounded-[24px] border border-white/10 bg-[#0d1219]/88 p-5 shadow-[0_12px_30px_rgba(0,0,0,0.18)] ${cardClassName}`.trim()}
+            className={`timeline-event relative rounded-[24px] border border-white/10 bg-[#0d1219]/88 p-5 shadow-[0_12px_30px_rgba(0,0,0,0.18)] ${cardClassName}`.trim()}
           >
             <div className="absolute left-[-31px] top-6 h-4 w-4 rounded-full border-[3px] border-[#111823] bg-[var(--color-fut-yellow)] shadow-[0_0_0_3px_rgba(245,208,0,0.12)]" />
 

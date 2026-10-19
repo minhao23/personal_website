@@ -1,5 +1,5 @@
-import { PortfolioScreen } from '../../components/portfolio-screen';
+import { redirect } from "next/navigation"
 
 export default function AboutPage() {
-  return <PortfolioScreen section="about" />;
+  redirect("/contact")
 }

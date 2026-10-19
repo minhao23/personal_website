@@ -11,7 +11,7 @@ export function CertificationList({ certifications, className }: CertificationLi
       {certifications.map((certification) => (
         <div
           key={`${certification.title}-${certification.issuer}`}
-          className="rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
+          className="certification-card rounded-[18px] border border-white/10 bg-black/22 px-4 py-4"
         >
           <p className="font-[var(--font-display)] text-[10px] tracking-[0.2em] text-[var(--color-fut-yellow)] uppercase">
             Certifications
