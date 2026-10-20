@@ -8,7 +8,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Minhao\'s personal website',
-  description: 'FIFA-inspired personal portfolio built with Next.js.',
+  description: '',
 };
 
 export const viewport: Viewport = {
